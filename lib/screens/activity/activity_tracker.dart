@@ -4,9 +4,6 @@ import 'package:fitnessapp/screens/activity/TodayTarget.dart';
 import 'package:fitnessapp/screens/activity/discover_workout.dart';
 import 'package:fitnessapp/screens/activity/latest_acitivity.dart';
 import 'package:fitnessapp/screens/activity/color.dart';
-import 'package:fitnessapp/screens/youtube_integrations/cardio.dart';
-import 'package:fitnessapp/screens/youtube_integrations/meditation.dart';
-import 'package:fitnessapp/screens/youtube_integrations/yoga.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -385,48 +382,6 @@ class _ActivityTrackerState extends State<ActivityTracker> {
               const SizedBox(
                 height: 10,
               ),
-              SizedBox(
-                height: 250,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: workouts.length,
-                    itemBuilder: (context, index) {
-                      vObj = workouts[index];
-                      return DiscoverWorkout(
-                        vObj: vObj,
-                        onPressed: () {
-                          print('tag is : == ${vObj['tagi']}');
-                          // Handle navigation based on the tag
-                          switch (vObj["tagi"]) {
-                            case "2": // Navigate to Privacy Policy
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Meditation()),
-                              );
-                              break;
-                            case "1": // Navigate to Settings
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Yoga()),
-                              );
-                              break;
-                            case "0": // Navigate to Settings
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Cardio()),
-                              );
-                              break;
-                            default:
-                              break;
-                          }
-                        },
-                      );
-                    }),
-              )
             ],
           ),
         ),
