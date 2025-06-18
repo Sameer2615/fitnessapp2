@@ -1,147 +1,121 @@
 // import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
 
-// void main() {
-//   runApp(GetMaterialApp(home: ReminderScreen()));
-// }
-
-// class ReminderController extends GetxController {
-//   var reminders = <Reminder>[].obs;
-
-//   void addReminder(String title, String category) {
-//     reminders.add(Reminder(title: title, category: category));
-//   }
-
-//   void toggleReminder(int index) {
-//     reminders[index].isOn = !reminders[index].isOn;
-//     reminders.refresh();
-//   }
-
-//   void deleteReminder(int index) {
-//     reminders.removeAt(index);
-//   }
-// }
-
-// class Reminder {
-//   String title;
-//   String category;
-//   bool isOn;
-
-//   Reminder({required this.title, required this.category, this.isOn = true});
-// }
-
-// class ReminderScreen extends StatelessWidget {
-//   final ReminderController controller = Get.put(ReminderController());
-
-//   final TextEditingController titleController = TextEditingController();
-//   final TextEditingController categoryController = TextEditingController();
+// class ContactUsPage extends StatelessWidget {
+//   const ContactUsPage({super.key});
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(title: Text('Reminders')),
-//       body: Obx(
-//         () => ListView.builder(
-//           padding: const EdgeInsets.all(12),
-//           itemCount: controller.reminders.length,
-//           itemBuilder: (context, index) {
-//             final reminder = controller.reminders[index];
-//             return Dismissible(
-//               key: Key(reminder.title + index.toString()),
-//               direction: DismissDirection.endToStart,
-//               onDismissed: (_) => controller.deleteReminder(index),
-//               background: Container(
-//                 alignment: Alignment.centerRight,
-//                 padding: EdgeInsets.only(right: 20),
-//                 color: Colors.red,
-//                 child: Icon(Icons.delete, color: Colors.white),
-//               ),
-//               child: Container(
-//                 margin: const EdgeInsets.symmetric(vertical: 6),
-//                 padding: const EdgeInsets.all(12),
-//                 decoration: BoxDecoration(
-//                   color: Colors.white,
-//                   borderRadius: BorderRadius.circular(16),
-//                   boxShadow: [
-//                     BoxShadow(
-//                       color: Colors.grey.withOpacity(0.3),
-//                       blurRadius: 6,
-//                       offset: Offset(0, 3),
-//                     ),
-//                   ],
-//                 ),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   children: [
-//                     Row(
-//                       children: [
-//                         Icon(Icons.notifications, color: Colors.teal),
-//                         SizedBox(width: 10),
-//                         Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             Text(reminder.title,
-//                                 style: TextStyle(fontWeight: FontWeight.bold)),
-//                             Text('Category: ${reminder.category}',
-//                                 style: TextStyle(color: Colors.grey)),
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                     Switch(
-//                       value: reminder.isOn,
-//                       onChanged: (_) => controller.toggleReminder(index),
-//                       activeColor: Colors.teal,
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             );
-//           },
+//       backgroundColor: const Color(0xFFD4F5D2), // Light green background
+//       appBar: AppBar(
+//         backgroundColor: Colors.transparent,
+//         elevation: 0,
+//         leading: const BackButton(color: Colors.black),
+//         title: const Text(
+//           'Menu',
+//           style: TextStyle(color: Colors.black),
 //         ),
 //       ),
-//       floatingActionButton: FloatingActionButton(
-//         backgroundColor: Colors.teal,
-//         child: Icon(Icons.add),
-//         onPressed: () {
-//           Get.bottomSheet(
-//             Container(
-//               padding: const EdgeInsets.all(20),
-//               decoration: BoxDecoration(
-//                 color: Colors.white,
-//                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-//               ),
-//               child: Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   TextField(
-//                     controller: titleController,
-//                     decoration: InputDecoration(labelText: 'Title'),
-//                   ),
-//                   TextField(
-//                     controller: categoryController,
-//                     decoration: InputDecoration(labelText: 'Category'),
-//                   ),
-//                   SizedBox(height: 20),
-//                   ElevatedButton(
-//                     style:
-//                         ElevatedButton.styleFrom(backgroundColor: Colors.teal),
-//                     onPressed: () {
-//                       controller.addReminder(
-//                         titleController.text,
-//                         categoryController.text,
-//                       );
-//                       titleController.clear();
-//                       categoryController.clear();
-//                       Get.back();
-//                     },
-//                     child: Text('Add Reminder'),
-//                   ),
-//                 ],
+//       body: Padding(
+//         padding: const EdgeInsets.all(18.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             const Text(
+//               'Contact Us',
+//               style: TextStyle(
+//                 fontSize: 32,
+//                 fontWeight: FontWeight.bold,
 //               ),
 //             ),
-//           );
-//         },
+//             const SizedBox(height: 12),
+//             const Text(
+//               "Don’t hesitate to contact us whether you have a suggestion on our improvement, a complain to discuss or an issue to solve.",
+//               style: TextStyle(fontSize: 15),
+//             ),
+//             const SizedBox(height: 28),
+
+//             // Row of contact options
+//             Row(
+//               children: [
+//                 // Call us
+//                 Expanded(
+//                   child: ContactCard(
+//                     icon: Icons.phone,
+//                     title: "Call us",
+//                     subtitle: "Our team is on the line",
+//                     timing: "Mon-Fri · 9-17",
+//                   ),
+//                 ),
+//                 const SizedBox(width: 16),
+//                 // Email us
+//                 Expanded(
+//                   child: ContactCard(
+//                     icon: Icons.email,
+//                     title: "Email us",
+//                     subtitle: "Our team is online",
+//                     timing: "Mon-Fri · 9-17",
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             const SizedBox(height: 28),
+
+//             // Social Media Text
+//             const Center(
+//               child: Text(
+//                 "Contact us in Social Media",
+//                 style: TextStyle(fontSize: 14, color: Colors.black54),
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class ContactCard extends StatelessWidget {
+//   final IconData icon;
+//   final String title;
+//   final String subtitle;
+//   final String timing;
+
+//   const ContactCard({
+//     super.key,
+//     required this.icon,
+//     required this.title,
+//     required this.subtitle,
+//     required this.timing,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.symmetric(vertical: 22),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(20),
+//       ),
+//       child: Column(
+//         children: [
+//           Icon(icon, size: 36, color: Colors.black),
+//           const SizedBox(height: 10),
+//           Text(
+//             title,
+//             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+//           ),
+//           const SizedBox(height: 6),
+//           Text(
+//             subtitle,
+//             style: const TextStyle(fontSize: 13, color: Colors.black54),
+//           ),
+//           const SizedBox(height: 4),
+//           Text(
+//             timing,
+//             style: const TextStyle(fontSize: 13, color: Colors.black54),
+//           ),
+//         ],
 //       ),
 //     );
 //   }

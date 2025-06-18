@@ -75,13 +75,17 @@ class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorDark,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: const Text('Calendar'),
+        centerTitle: true,
       ),
       floatingActionButton: SizedBox(
         width: 80,
         height: 40,
         child: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColorLight,
           onPressed: () {
             showDialog(
               context: context,
@@ -123,6 +127,10 @@ class _CalenderState extends State<Calender> {
             );
           },
           shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Theme.of(context).primaryColorLight,
+              width: 2.0,
+            ),
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: const Text('Add Event'),
@@ -136,27 +144,60 @@ class _CalenderState extends State<Calender> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TableCalendar(
-            rowHeight: 35,
-            headerStyle: const HeaderStyle(
-                formatButtonVisible: false, titleCentered: true),
-            availableGestures: AvailableGestures.all,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            focusedDay: _focusedDay,
-            eventLoader: _getsEventsForDay,
-            firstDay: DateTime.utc(2010, 12, 30),
-            lastDay: DateTime.utc(2030, 10, 25),
-            onDaySelected: _onselected,
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-        ),
+            padding: const EdgeInsets.all(11.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .primaryColorLight, // 👈 your calendar background color
+                borderRadius:
+                    BorderRadius.circular(12), // optional: rounded corners
+              ),
+              padding: const EdgeInsets.all(12), // optional: inner space
+              child: TableCalendar(
+                rowHeight: 55,
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+                availableGestures: AvailableGestures.all,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                focusedDay: _focusedDay,
+                eventLoader: _getsEventsForDay,
+                firstDay: DateTime.utc(2010, 12, 30),
+                lastDay: DateTime.utc(2030, 10, 25),
+                onDaySelected: _onselected,
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+                calendarBuilders: CalendarBuilders(
+                  selectedBuilder: (context, date, _) => Container(
+                    margin: const EdgeInsets.all(6.0),
+                    decoration: BoxDecoration(
+                      color: Colors.green, // 👈 background for selected date
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${date.day}',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            )),
         const SizedBox(
           height: 15,
         ),
-        const Text('Events'),
+        const Text(
+          'Your Events',
+          style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 0, 0, 0)),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
         Expanded(
           child: ValueListenableBuilder(
             valueListenable: _selectedEvents,
@@ -215,8 +256,8 @@ class _CalenderState extends State<Calender> {
                     child: Container(
                       margin: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(
-                            255, 202, 186, 186), // Background color
+                        color: Theme.of(context)
+                            .primaryColorLight, // Background color
                         borderRadius:
                             BorderRadius.circular(10), // Rounded edges
                         boxShadow: [
@@ -242,11 +283,6 @@ class _CalenderState extends State<Calender> {
             },
           ),
         ),
-        Column(
-          children: [
-            Text('hello9ooooooooooooooo'),
-          ],
-        )
       ],
     );
   }

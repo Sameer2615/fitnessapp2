@@ -11,8 +11,13 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorDark,
       appBar: AppBar(
-        title: const Text('Favorites'),
+        backgroundColor: Theme.of(context).primaryColorDark,
+        title: const Text(
+          'Your Favorites',
+          style: TextStyle(fontSize: 24),
+        ),
         centerTitle: true,
       ),
       body: Obx(() {
@@ -24,6 +29,7 @@ class FavoritesPage extends StatelessWidget {
           itemBuilder: (context, index) {
             final food = favoritesController.favoriteFoods[index];
             return ListTile(
+              tileColor: Theme.of(context).primaryColorLight,
               leading: Image.asset(food.image1, width: 50, height: 50),
               title: Text(food.name),
               trailing: IconButton(

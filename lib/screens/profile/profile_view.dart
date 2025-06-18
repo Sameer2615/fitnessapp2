@@ -5,6 +5,8 @@ import 'package:fitnessapp/screens/activity/activity_tracker.dart';
 // import 'package:fitnessapp/screens/activity/activity_tracking.dart';
 import 'package:fitnessapp/screens/login_signup/login_page.dart';
 import 'package:fitnessapp/screens/login_signup/manage_profle.dart';
+import 'package:fitnessapp/screens/profile/contact.dart';
+import 'package:fitnessapp/screens/profile/priavcy.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessapp/screens/profile/round_button.dart';
 import 'package:fitnessapp/screens/profile/setting_row.dart';
@@ -305,7 +307,7 @@ class _ProfileViewState extends State<ProfileView> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const ActivityTracker()),
+                                                    const ContactUsPage()),
                                           );
                                           break;
                                         case "6": // Navigate to Privacy Policy
@@ -313,7 +315,7 @@ class _ProfileViewState extends State<ProfileView> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const LoginPage()),
+                                                    const PrivacyPolicyPage()),
                                           );
                                           break;
                                         case "7": // Navigate to Settings

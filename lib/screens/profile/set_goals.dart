@@ -75,11 +75,19 @@ class _SetGoalState extends State<SetGoal> {
     final SetgoalsController waterController = Get.put(SetgoalsController());
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorDark,
       appBar: AppBar(
-        title: const Text('Set Goal'),
+        backgroundColor: Theme.of(context).primaryColorDark,
+        centerTitle: true,
+        title: const Text(
+          'Set Goal',
+        ),
       ),
       body: Column(
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Container(
             height: 180,
             width: double.infinity,
@@ -88,6 +96,8 @@ class _SetGoalState extends State<SetGoal> {
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(28),
                 bottomRight: Radius.circular(28),
+                topLeft: Radius.circular(28),
+                topRight: Radius.circular(28),
               ),
             ),
             child: Column(
@@ -362,23 +372,6 @@ class _SetGoalState extends State<SetGoal> {
                                           ],
                                         )),
                                   ),
-
-                                  // IconButton(
-                                  //   onPressed: () {
-                                  //     LocalNotification.showsimplenotification(
-                                  //         title: 'water reminder in time ',
-                                  //         body: 'Drink water in time',
-                                  //         payload: 'drink water in time');
-                                  //     ScaffoldMessenger.of(context)
-                                  //         .showSnackBar(
-                                  //       const SnackBar(
-                                  //         content: Text('Water reminder added'),
-                                  //         duration: Duration(seconds: 2),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  //   icon: const Icon(Icons.notification_add),
-                                  // )
                                 ],
                               ),
                               const SizedBox(
@@ -404,44 +397,6 @@ class _SetGoalState extends State<SetGoal> {
                       ),
                       const SizedBox(
                         height: 20,
-                      ),
-                      Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorLight,
-                          borderRadius: BorderRadius.circular(6),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorLight,
-                          borderRadius: BorderRadius.circular(6),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
                       ),
                     ],
                   ),
