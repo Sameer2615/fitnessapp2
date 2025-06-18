@@ -4,6 +4,7 @@ import 'package:fitnessapp/screens/Reminder/drink_reminder.dart';
 
 import 'package:fitnessapp/screens/activity/activity_tracker.dart';
 import 'package:fitnessapp/screens/extra.dart';
+import 'package:fitnessapp/screens/foods/food_details.dart';
 import 'package:fitnessapp/screens/login_signup/calender.dart';
 import 'package:fitnessapp/screens/profile/priavcy.dart';
 import 'package:fitnessapp/screens/profile/profile_view.dart';
@@ -39,8 +40,8 @@ class _FrontPageState extends State<FrontPage> {
     return [
       const ActivityTracker(),
       // const Calender(),
-      ReminderScreen(),
-      DrinkReminder(),
+      SetGoal(),
+      const BreakFast(),
       const ProfileView(),
       // EditPersonalinfo(),
       // Profile(),

@@ -28,6 +28,12 @@ class _SetGoalState extends State<SetGoal> {
     _loadNotificationState();
     AwesomeNotification notification = AwesomeNotification();
     notification.setupNotificationActionListeners();
+    user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      //  / Points to the 'user_info' document with the user's UID as the document ID.
+      userDoc =
+          FirebaseFirestore.instance.collection('user_info').doc(user!.uid);
+    }
   }
 
   void _loadNotificationState() async {
@@ -92,7 +98,7 @@ class _SetGoalState extends State<SetGoal> {
             height: 20,
           ),
           Container(
-            height: 180,
+            height: 190,
             width: double.infinity,
             decoration: const BoxDecoration(
               color: Color.fromARGB(255, 238, 238, 216),

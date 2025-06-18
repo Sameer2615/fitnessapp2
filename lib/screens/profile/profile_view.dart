@@ -103,7 +103,16 @@ class _ProfileViewState extends State<ProfileView> {
           style: TextStyle(
               color: TColor.black, fontSize: 16, fontWeight: FontWeight.w700),
         ),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+              icon: const Icon(Icons.more))
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
