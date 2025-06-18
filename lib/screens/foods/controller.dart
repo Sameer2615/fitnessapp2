@@ -47,7 +47,9 @@ class SetgoalsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadReminder(); // Load favorites when the app starts
+    loadReminder();
+    loadWaterCon();
+// Load favorites when the app starts
   }
 
   var selectedWaterCap = ''.obs;
@@ -55,6 +57,8 @@ class SetgoalsController extends GetxController {
   var fromTime = ''.obs;
   var toTime = ''.obs;
   var quantityInterval = ''.obs;
+  var selectedWaterCon = '0 ml'.obs;
+
   void setWaterCap(String value) async {
     selectedWaterCap.value = value;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -85,6 +89,12 @@ class SetgoalsController extends GetxController {
     prefs.setString('quantityInterval', value);
   }
 
+  void setWatercon(String value) async {
+    selectedWaterCon.value = value;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('waterCon', value);
+  }
+
   void saveReminder() {
     // You could save this to a database or shared preferences instead
     print('Water Cap: ${selectedWaterCap.value}');
@@ -100,5 +110,10 @@ class SetgoalsController extends GetxController {
     fromTime.value = prefs.getString('fromTime') ?? '';
     toTime.value = prefs.getString('toTime') ?? '';
     quantityInterval.value = prefs.getString('quantityInterval') ?? '';
+  }
+
+  void loadWaterCon() async {
+    final prefs = await SharedPreferences.getInstance();
+    selectedWaterCon.value = prefs.getString('waterCon') ?? '0 ml';
   }
 }

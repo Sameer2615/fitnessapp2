@@ -202,12 +202,14 @@ class _ActivityTrackerState extends State<ActivityTracker> {
                     //////TODAY TARGET SECTION/////
                     Row(
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: InkWell(
-                            onTap:
-                                //send notification
-                                AwesomeNotification.sendNotification,
-                            child: TodayTargetCell(
+                            onTap: () {
+                              AwesomeNotification notification =
+                                  AwesomeNotification();
+                              notification.sendNotification();
+                            },
+                            child: const TodayTargetCell(
                               icon: "assets/img/water.png",
                               value: "8L",
                               title: "Water Intake",

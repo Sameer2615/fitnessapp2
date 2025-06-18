@@ -26,6 +26,8 @@ class _SetGoalState extends State<SetGoal> {
   void initState() {
     super.initState();
     _loadNotificationState();
+    AwesomeNotification notification = AwesomeNotification();
+    notification.setupNotificationActionListeners();
   }
 
   void _loadNotificationState() async {
@@ -55,7 +57,8 @@ class _SetGoalState extends State<SetGoal> {
       );
     } else {
       // Turn ON
-      AwesomeNotification.sendRepeatingNotification();
+      AwesomeNotification notification = AwesomeNotification();
+      notification.sendRepeatingNotification();
       setState(() {
         isNotificationOn = true;
       });
@@ -293,6 +296,11 @@ class _SetGoalState extends State<SetGoal> {
                             );
                           }
                         }
+                        print('Snapshot state:');
+                        print('ConnectionState: ${snapshot.connectionState}');
+                        print('Has error: ${snapshot.hasError}');
+                        print('Has data: ${snapshot.hasData}');
+                        print('Data: ${snapshot.data}');
                         return const Text('No data available.');
                       },
                     ),
@@ -354,7 +362,7 @@ class _SetGoalState extends State<SetGoal> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                                'Time interval : ${waterController.selectedTimeValue.value}'),
+                                                'Water Consumed : ${waterController.selectedWaterCon.value}'),
                                             Text(
                                                 'Total quantity : ${waterController.selectedWaterCap.value}'),
                                             Text(

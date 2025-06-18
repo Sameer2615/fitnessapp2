@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitnessapp/local_notification/awesome_notification.dart';
 import 'package:fitnessapp/screens/front_page.dart';
 import 'package:timezone/data/latest.dart' as tz;
 // import 'package:fitnessapp/screens/profile.dart';
@@ -41,7 +42,9 @@ void main() async {
         importance: NotificationImportance.High,
       ),
     ],
+    debug: true,
   );
+
   // Check if user has granted notification permission globally
   await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
     if (!isAllowed) {
@@ -53,7 +56,9 @@ void main() async {
   //   print('Notification tapped: ${receivedNotification.payload}');
   //   // Navigate or perform actions based on notification
   // });
-
+  // setupNotificationListeners();
+  AwesomeNotification notification = AwesomeNotification();
+  notification.setupNotificationActionListeners();
   runApp(const MyApp());
 }
 
