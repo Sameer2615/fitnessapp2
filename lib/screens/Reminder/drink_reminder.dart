@@ -35,7 +35,11 @@ class _DrinkReminderState extends State<DrinkReminder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Drink Reminder')),
+      backgroundColor: Theme.of(context).primaryColorDark,
+      appBar: AppBar(
+        title: const Text('Drink Reminder'),
+        backgroundColor: Theme.of(context).primaryColorDark,
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(8),
