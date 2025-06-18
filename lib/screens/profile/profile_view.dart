@@ -5,6 +5,8 @@ import 'package:fitnessapp/screens/activity/activity_tracker.dart';
 // import 'package:fitnessapp/screens/activity/activity_tracking.dart';
 import 'package:fitnessapp/screens/login_signup/login_page.dart';
 import 'package:fitnessapp/screens/login_signup/manage_profle.dart';
+import 'package:fitnessapp/screens/profile/contact.dart';
+import 'package:fitnessapp/screens/profile/priavcy.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessapp/screens/profile/round_button.dart';
 import 'package:fitnessapp/screens/profile/setting_row.dart';
@@ -25,7 +27,26 @@ class _ProfileViewState extends State<ProfileView> {
   bool positive = false;
   late Map<String, dynamic> iObj;
 
-  List<Map<String, dynamic>> accountArr = [
+  // List<Map<String, dynamic>> accountArr = [
+  //   {
+  //     "image": "assets/img1/img/p_personal.png",
+  //     "name": "Personal Data",
+  //     "tag": "1"
+  //   },
+  //   {"image": "assets/img1/img/p_achi.png", "name": "Achievement", "tag": "2"},
+  //   {
+  //     "image": "assets/img1/img/p_activity.png",
+  //     "name": "Activity History",
+  //     "tag": "3"
+  //   },
+  //   // {
+  //   //   "image": "assets/img1/img/p_workout.png",
+  //   //   "name": "Workout Progress",
+  //   //   "tag": "4"
+  //   // },
+  // ];
+
+  List<Map<String, dynamic>> otherArr = [
     {
       "image": "assets/img1/img/p_personal.png",
       "name": "Personal Data",
@@ -41,10 +62,7 @@ class _ProfileViewState extends State<ProfileView> {
       "image": "assets/img1/img/p_workout.png",
       "name": "Workout Progress",
       "tag": "4"
-    }
-  ];
-
-  List<Map<String, dynamic>> otherArr = [
+    },
     {
       "image": "assets/img1/img/p_contact.png",
       "name": "Contact Us",
@@ -157,32 +175,32 @@ class _ProfileViewState extends State<ProfileView> {
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              width: 70,
-                              height: 25,
-                              child: RoundButton(
-                                title: "Edit",
-                                type: RoundButtonType.bgGradient,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                onPressed: () {
-                                  navigatorKey.currentState?.push(
-                                    MaterialPageRoute(
-                                      builder: (context) => ManageProfile(
-                                        name: '${userData['name']}',
-                                        frontLetter:
-                                            userData['name'][0].toUpperCase(),
-                                        email: userData['email'],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
+                            // SizedBox(
+                            //   width: 70,
+                            //   height: 25,
+                            //   child: RoundButton(
+                            //     title: "Edit",
+                            //     type: RoundButtonType.bgGradient,
+                            //     fontSize: 16,
+                            //     fontWeight: FontWeight.w400,
+                            //     onPressed: () {
+                            //       navigatorKey.currentState?.push(
+                            //         MaterialPageRoute(
+                            //           builder: (context) => ManageProfile(
+                            //             name: '${userData['name']}',
+                            //             frontLetter:
+                            //                 userData['name'][0].toUpperCase(),
+                            //             email: userData['email'],
+                            //           ),
+                            //         ),
+                            //       );
+                            //     },
+                            //   ),
+                            // )
                           ],
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 35,
                         ),
                         Row(
                           children: [
@@ -213,7 +231,117 @@ class _ProfileViewState extends State<ProfileView> {
                           ],
                         ),
                         const SizedBox(
-                          height: 25,
+                          height: 45,
+                        ),
+                        ////////ACCOUNT////////
+
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorLight,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: const [
+                                BoxShadow(color: Colors.black12, blurRadius: 2)
+                              ]),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Account ",
+                                style: TextStyle(
+                                  color: TColor.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              //  /Inside ListView.builder
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                itemCount: otherArr.length,
+                                itemBuilder: (context, index) {
+                                  Map<String, dynamic> iObj = otherArr[index];
+
+                                  return SettingRow(
+                                    icon: iObj["image"].toString(),
+                                    title: iObj["name"].toString(),
+                                    onPressed: () {
+                                      // Handle navigation based on the tag
+                                      switch (iObj["tagi"]) {
+                                        case "1": // Navigate to Contact Us
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ActivityTracker()),
+                                          );
+                                        case "2": // Navigate to Contact Us
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ActivityTracker()),
+                                          );
+                                        case "3": // Navigate to Contact Us
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ActivityTracker()),
+                                          );
+                                        case "4": // Navigate to Contact Us
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ActivityTracker()),
+                                          );
+                                          break;
+                                        case "5": // Navigate to Contact Us
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ContactUsPage()),
+                                          );
+                                          break;
+                                        case "6": // Navigate to Privacy Policy
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const PrivacyPolicyPage()),
+                                          );
+                                          break;
+                                        case "7": // Navigate to Settings
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ManageProfile(
+                                                name: '${userData['name']}',
+                                                frontLetter: userData['name'][0]
+                                                    .toUpperCase(),
+                                                email: userData['email'],
+                                              ),
+                                            ),
+                                          );
+                                          break;
+                                        default:
+                                          // Handle unmatched cases
+                                          break;
+                                      }
+                                    },
+                                  );
+                                },
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     );
@@ -222,126 +350,6 @@ class _ProfileViewState extends State<ProfileView> {
                   }
                 },
               ),
-
-              ////////ACCOUNT////////
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(color: Colors.black12, blurRadius: 2)
-                    ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Account",
-                      style: TextStyle(
-                        color: TColor.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: accountArr.length,
-                      itemBuilder: (context, index) {
-                        iObj = accountArr[index];
-                        return SettingRow(
-                          icon: iObj["image"].toString(),
-                          title: iObj["name"].toString(),
-                          onPressed: () {},
-                        );
-                      },
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-
-              //
-              const SizedBox(
-                height: 25,
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(color: Colors.black12, blurRadius: 2)
-                    ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Other",
-                      style: TextStyle(
-                        color: TColor.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    //  /Inside ListView.builder
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: otherArr.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic> iObj = otherArr[index];
-
-                        return SettingRow(
-                          icon: iObj["image"].toString(),
-                          title: iObj["name"].toString(),
-                          onPressed: () {
-                            // Handle navigation based on the tag
-                            switch (iObj["tagi"]) {
-                              case "5": // Navigate to Contact Us
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ActivityTracker()),
-                                );
-                                break;
-                              case "6": // Navigate to Privacy Policy
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage()),
-                                );
-                                break;
-                              case "7": // Navigate to Settings
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage()),
-                                );
-                                break;
-                              default:
-                                // Handle unmatched cases
-                                break;
-                            }
-                          },
-                        );
-                      },
-                    )
-                  ],
-                ),
-              )
             ],
           ),
         ),

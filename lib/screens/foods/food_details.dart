@@ -19,7 +19,7 @@ class FoodDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: Theme.of(context).colorScheme.primary,
-        backgroundColor: const Color.fromARGB(255, 62, 206, 67),
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: const Text('Food Details'),
         centerTitle: true,
         actions: [
@@ -55,27 +55,27 @@ class FoodDetail extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-            margin: const EdgeInsets.all(8),
+            color: Theme.of(context).primaryColorDark,
             width: double.infinity,
             child: Column(
               children: [
-                const SizedBox(
-                  height: 8,
-                ),
+                /////////CAROUSEL SECTON//////////
+                Container(
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 10),
+                    width: 400,
+                    height: 260,
+                    child: AnotherCarousel(
+                      images: [
+                        AssetImage(food.image1),
+                        AssetImage(food.image2),
+                      ],
+                      showIndicator: false,
+                    )),
                 Text(
                   food.name,
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
+                      fontWeight: FontWeight.bold, fontSize: 24),
                 ),
-                /////////CAROUSEL SECTON//////////
-                Container(
-                    padding: const EdgeInsets.all(12),
-                    width: double.infinity,
-                    height: 200,
-                    child: AnotherCarousel(images: [
-                      AssetImage(food.image1),
-                      AssetImage(food.image2),
-                    ])),
                 const SizedBox(
                   height: 28,
                 ),
@@ -88,25 +88,25 @@ class FoodDetail extends StatelessWidget {
                         label: 'Protein',
                         value: food.proteinvalue,
                         maxValue: 100,
-                        color: Colors.green),
+                        color: const Color.fromARGB(255, 99, 142, 49)),
                     _buildMacroIndicator(
                       label: 'Carbs',
                       value: food.carbsvalue,
                       maxValue: 100,
-                      color: const Color.fromARGB(255, 165, 144, 137),
+                      color: const Color.fromARGB(255, 64, 18, 129),
                     ),
                     _buildMacroIndicator(
                         label: 'Fats',
                         value: food.fatsvalue,
                         maxValue: 100,
-                        color: const Color.fromARGB(255, 218, 200, 43))
+                        color: const Color.fromARGB(255, 170, 58, 153))
                   ],
                 ),
                 const SizedBox(
                   height: 28,
                 ),
                 Card(
-                  color: const Color.fromARGB(255, 231, 236, 240),
+                  color: Theme.of(context).primaryColorLight,
                   shadowColor: const Color.fromARGB(255, 90, 42, 42),
                   elevation: 8,
                   child: Padding(
@@ -182,8 +182,8 @@ class FoodDetail extends StatelessWidget {
     return Column(
       children: [
         CircularPercentIndicator(
-          radius: 40.0,
-          lineWidth: 15.0,
+          radius: 50.0,
+          lineWidth: 10.0,
           percent: value / maxValue,
           center: Text(
             '$value/$maxValue',

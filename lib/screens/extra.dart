@@ -1,74 +1,122 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
-class SelectionPage extends StatefulWidget {
-  const SelectionPage({super.key});
+// class ContactUsPage extends StatelessWidget {
+//   const ContactUsPage({super.key});
 
-  @override
-  _SelectionPageState createState() => _SelectionPageState();
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: const Color(0xFFD4F5D2), // Light green background
+//       appBar: AppBar(
+//         backgroundColor: Colors.transparent,
+//         elevation: 0,
+//         leading: const BackButton(color: Colors.black),
+//         title: const Text(
+//           'Menu',
+//           style: TextStyle(color: Colors.black),
+//         ),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(18.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             const Text(
+//               'Contact Us',
+//               style: TextStyle(
+//                 fontSize: 32,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//             const SizedBox(height: 12),
+//             const Text(
+//               "Don’t hesitate to contact us whether you have a suggestion on our improvement, a complain to discuss or an issue to solve.",
+//               style: TextStyle(fontSize: 15),
+//             ),
+//             const SizedBox(height: 28),
 
-class _SelectionPageState extends State<SelectionPage> {
-  String selectedOption = 'Daily'; // Default selected
+//             // Row of contact options
+//             Row(
+//               children: [
+//                 // Call us
+//                 Expanded(
+//                   child: ContactCard(
+//                     icon: Icons.phone,
+//                     title: "Call us",
+//                     subtitle: "Our team is on the line",
+//                     timing: "Mon-Fri · 9-17",
+//                   ),
+//                 ),
+//                 const SizedBox(width: 16),
+//                 // Email us
+//                 Expanded(
+//                   child: ContactCard(
+//                     icon: Icons.email,
+//                     title: "Email us",
+//                     subtitle: "Our team is online",
+//                     timing: "Mon-Fri · 9-17",
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             const SizedBox(height: 28),
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Select Option')),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          // Dropdown menu
-          DropdownButton<String>(
-            value: selectedOption,
-            items: ['Daily', 'Weekly', 'Monthly']
-                .map((option) => DropdownMenuItem(
-                      value: option,
-                      child: Text(option),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                selectedOption = value!;
-              });
-            },
-          ),
-          const SizedBox(height: 20),
-          // Container based on selection
-          Expanded(
-            child: Center(
-              child: getSelectedContainer(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+//             // Social Media Text
+//             const Center(
+//               child: Text(
+//                 "Contact us in Social Media",
+//                 style: TextStyle(fontSize: 14, color: Colors.black54),
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-  // Returns container based on what is selected
-  Widget getSelectedContainer() {
-    if (selectedOption == 'Daily') {
-      return Container(
-        color: Colors.blue[100],
-        width: 200,
-        height: 200,
-        child: const Center(child: Text('Daily View')),
-      );
-    } else if (selectedOption == 'Weekly') {
-      return Container(
-        color: Colors.green[100],
-        width: 200,
-        height: 200,
-        child: const Center(child: Text('Weekly View')),
-      );
-    } else if (selectedOption == 'Monthly') {
-      return Container(
-        color: Colors.red[100],
-        width: 200,
-        height: 200,
-        child: const Center(child: Text('Monthly View')),
-      );
-    } else {
-      return Container();
-    }
-  }
-}
+// class ContactCard extends StatelessWidget {
+//   final IconData icon;
+//   final String title;
+//   final String subtitle;
+//   final String timing;
+
+//   const ContactCard({
+//     super.key,
+//     required this.icon,
+//     required this.title,
+//     required this.subtitle,
+//     required this.timing,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.symmetric(vertical: 22),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(20),
+//       ),
+//       child: Column(
+//         children: [
+//           Icon(icon, size: 36, color: Colors.black),
+//           const SizedBox(height: 10),
+//           Text(
+//             title,
+//             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+//           ),
+//           const SizedBox(height: 6),
+//           Text(
+//             subtitle,
+//             style: const TextStyle(fontSize: 13, color: Colors.black54),
+//           ),
+//           const SizedBox(height: 4),
+//           Text(
+//             timing,
+//             style: const TextStyle(fontSize: 13, color: Colors.black54),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

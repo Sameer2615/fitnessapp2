@@ -24,13 +24,18 @@ class _BreakFastState extends State<BreakFast> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: const Text('Calculate Calories'),
         centerTitle: true,
       ),
       body: Container(
+        color: Theme.of(context).primaryColorDark,
         padding: const EdgeInsets.all(5),
         child: Column(
           children: [
+            const SizedBox(
+              height: 40,
+            ),
             //////////SEARCH///////////////
             Padding(
               padding: const EdgeInsets.all(12.0),
@@ -61,54 +66,10 @@ class _BreakFastState extends State<BreakFast> {
                 ),
               ),
             ),
-            //////////////////RECENT AND FAVORITES///////////
-            Container(
-              height: 60,
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorLight,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Center(
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: _selectedindex == 0
-                                    ? Colors.grey
-                                    : Theme.of(context).primaryColorLight),
-                            onPressed: () {
-                              setState(() {
-                                _selectedindex = 0;
-                              });
-                            },
-                            child: const Text(
-                              'Recent',
-                              style: TextStyle(color: Colors.black),
-                            ))),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _selectedindex = 1;
-                            });
-                          },
-                          style: TextButton.styleFrom(
-                              backgroundColor: _selectedindex == 1
-                                  ? Colors.grey
-                                  : Theme.of(context).primaryColorLight),
-                          child: const Text('Favorites',
-                              style: TextStyle(
-                                color: Colors.black,
-                              ))),
-                    ),
-                  ),
-                ],
-              ),
+            const SizedBox(
+              height: 40,
             ),
+
             /////////////RECENT FOOD ITEMS////////////
             Expanded(
               child: ListView.builder(
@@ -122,9 +83,9 @@ class _BreakFastState extends State<BreakFast> {
 
                     return Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 6),
+                            vertical: 5, horizontal: 6),
                         child: SizedBox(
-                          height: 95,
+                          height: 90,
                           child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
@@ -202,7 +163,11 @@ class _BreakFastState extends State<BreakFast> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.favorite),
+          backgroundColor: Theme.of(context).primaryColorLight,
+          child: const Icon(
+            Icons.favorite,
+            color: Colors.red,
+          ),
           onPressed: () {
             Get.to(FavoritesPage());
           }),

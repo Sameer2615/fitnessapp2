@@ -1,13 +1,20 @@
 // import 'package:fitnessapp/profile/profile_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:fitnessapp/screens/activity/activity_tracker.dart';
+import 'package:fitnessapp/screens/extra.dart';
+import 'package:fitnessapp/screens/login_signup/calender.dart';
+import 'package:fitnessapp/screens/profile/priavcy.dart';
 import 'package:fitnessapp/screens/profile/profile_view.dart';
 
 import 'package:fitnessapp/screens/foods/breakfast_page.dart';
 import 'package:fitnessapp/screens/login_signup/login_page.dart';
 import 'package:fitnessapp/screens/profile/set_goals.dart';
+import 'package:fitnessapp/screens/Reminder/reminder_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:fitnessapp/screens/profile/contact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FrontPage extends StatefulWidget {
@@ -29,9 +36,14 @@ class _FrontPageState extends State<FrontPage> {
       PersistentTabController(initialIndex: 0);
   List<Widget> _buildScreens() {
     return [
-      const ActivityTracker(),
       const BreakFast(),
-      SetGoal(),
+
+      const ActivityTracker(),
+
+      const Calender(),
+      // ReminderScreen(),
+      // ContactUsPage(),
+      // SetGoal(),
       const ProfileView(),
       // EditPersonalinfo(),
       // Profile(),
