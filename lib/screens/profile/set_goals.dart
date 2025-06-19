@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessapp/firebase_services/firebase_auth.dart';
@@ -23,6 +22,7 @@ User? user;
 DocumentReference<Map<String, dynamic>>? userDoc;
 
 class _SetGoalState extends State<SetGoal> {
+  @override
   void initState() {
     super.initState();
     _loadNotificationState();
@@ -94,7 +94,7 @@ class _SetGoalState extends State<SetGoal> {
       ),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Container(

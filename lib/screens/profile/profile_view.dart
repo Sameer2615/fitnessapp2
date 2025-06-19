@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessapp/firebase_services/firebase_auth.dart';
-import 'package:fitnessapp/main.dart';
 import 'package:fitnessapp/screens/activity/activity_tracker.dart';
+import 'package:fitnessapp/screens/foods/diet_list.dart';
 // import 'package:fitnessapp/screens/activity/activity_tracking.dart';
-import 'package:fitnessapp/screens/login_signup/login_page.dart';
 import 'package:fitnessapp/screens/login_signup/manage_profle.dart';
 import 'package:fitnessapp/screens/profile/contact.dart';
 import 'package:fitnessapp/screens/profile/priavcy.dart';
 import 'package:flutter/material.dart';
-import 'package:fitnessapp/screens/profile/round_button.dart';
 import 'package:fitnessapp/screens/profile/setting_row.dart';
 import 'package:fitnessapp/screens/activity/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -108,7 +106,7 @@ class _ProfileViewState extends State<ProfileView> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  MaterialPageRoute(builder: (context) => const DietList()),
                 );
               },
               icon: const Icon(Icons.more))
@@ -340,6 +338,7 @@ class _ProfileViewState extends State<ProfileView> {
                                               ),
                                             ),
                                           );
+
                                           break;
                                         default:
                                           // Handle unmatched cases

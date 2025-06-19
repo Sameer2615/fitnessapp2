@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'food_list.dart'; // Import your Food class and foodList
@@ -5,11 +7,16 @@ import 'food_list.dart'; // Import your Food class and foodList
 class FavoritesController extends GetxController {
   // Observable list of favorite items
   var favoriteFoods = <Food>[].obs;
+  var mealList = <Map<String, String>>[].obs;
+
+  final RxString selectedFoodName = ''.obs;
+  final RxString selectedQuantity = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    loadFavorites(); // Load favorites when the app starts
+    loadFavorites();
+    loadMealListFromPrefs();
   }
 
   void addToFavorites(Food food) async {
@@ -17,6 +24,57 @@ class FavoritesController extends GetxController {
       favoriteFoods.add(food);
       await saveFavorites();
     }
+  }
+
+  void addFoodItem(String name, String quantity) {
+    mealList.add({'name': name, 'quantity': quantity});
+    saveMealListToPrefs();
+  }
+
+  void saveReminder() async {
+    final String name = selectedFoodName.value;
+    final String quantity = selectedQuantity.value;
+
+    final exists =
+        foodList.any((food) => food.name.toLowerCase() == name.toLowerCase());
+
+    if (!exists) {
+      Get.snackbar('Food Not Found', 'Food "$name" does not exist in database');
+      return;
+    }
+
+    final alreadyExists = mealList
+        .any((item) => item['name']?.toLowerCase() == name.toLowerCase());
+    if (alreadyExists) {
+      Get.snackbar('Duplicate Food', 'Food "$name" is already in your list');
+      return;
+    }
+
+    addFoodItem(name, quantity);
+    Get.snackbar('Added!', 'Food "$name" added successfully');
+  }
+
+  Future<void> saveMealListToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> mealJsonList =
+        mealList.map((item) => jsonEncode(item)).toList();
+    await prefs.setStringList('mealList', mealJsonList);
+  }
+
+  Future<void> loadMealListFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> mealJsonList = prefs.getStringList('mealList') ?? [];
+
+    mealList.value = mealJsonList
+        .map((jsonString) => Map<String, String>.from(jsonDecode(jsonString)))
+        .toList();
+  }
+
+  // Optional: clear all meals
+  Future<void> clearMealList() async {
+    mealList.clear();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('mealList');
   }
 
   void removeFromFavorites(Food food) async {

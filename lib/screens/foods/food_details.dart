@@ -61,7 +61,8 @@ class FoodDetail extends StatelessWidget {
               children: [
                 /////////CAROUSEL SECTON//////////
                 Container(
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 10),
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, top: 10),
                     width: 400,
                     height: 260,
                     child: AnotherCarousel(

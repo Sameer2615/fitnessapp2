@@ -14,10 +14,10 @@ class PrivacyPolicyPage extends StatelessWidget {
           ),
       body: const SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 "Your Privacy Matters",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),

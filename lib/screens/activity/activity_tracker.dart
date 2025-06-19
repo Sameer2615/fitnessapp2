@@ -1,7 +1,6 @@
 import 'package:fitnessapp/local_notification/awesome_notification.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fitnessapp/screens/activity/TodayTarget.dart';
-import 'package:fitnessapp/screens/activity/discover_workout.dart';
 import 'package:fitnessapp/screens/activity/latest_acitivity.dart';
 import 'package:fitnessapp/screens/activity/color.dart';
 import 'package:pedometer/pedometer.dart';

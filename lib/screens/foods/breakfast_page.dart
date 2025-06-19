@@ -14,7 +14,7 @@ class BreakFast extends StatefulWidget {
 }
 
 class _BreakFastState extends State<BreakFast> {
-  int _selectedindex = 0;
+  final int _selectedindex = 0;
   List<Food> searchResults = foodList;
 
   // List<Food> foods = foodList;

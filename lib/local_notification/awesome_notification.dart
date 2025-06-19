@@ -1,7 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:fitnessapp/screens/foods/controller.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AwesomeNotification {
@@ -173,7 +172,7 @@ class AwesomeNotification {
           body: 'Reminder to drink water!',
         ),
         schedule: NotificationCalendar.fromDate(
-          date: DateTime.now().add(Duration(minutes: 30)),
+          date: DateTime.now().add(const Duration(minutes: 30)),
         ));
   }
 

@@ -1,8 +1,5 @@
-import 'package:fitnessapp/screens/extra.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:fitnessapp/main.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import 'package:fitnessapp/screens/Reminder/reminder_controller_screen.dart';
 
@@ -12,12 +9,14 @@ class ReminderScreen extends StatelessWidget {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
 
+  ReminderScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       appBar: AppBar(
-        title: Text('Reminders'),
+        title: const Text('Reminders'),
         backgroundColor: Theme.of(context).primaryColorDark,
       ),
       body: Obx(
@@ -36,7 +35,7 @@ class ReminderScreen extends StatelessWidget {
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
                     blurRadius: 6,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -45,15 +44,16 @@ class ReminderScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.notifications, color: Colors.teal),
-                      SizedBox(width: 10),
+                      const Icon(Icons.notifications, color: Colors.teal),
+                      const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(reminder.title,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           Text('Category: ${reminder.category}',
-                              style: TextStyle(color: Colors.grey)),
+                              style: const TextStyle(color: Colors.grey)),
                         ],
                       ),
                     ],
@@ -71,12 +71,12 @@ class ReminderScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColorDark,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           Get.bottomSheet(
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
@@ -85,13 +85,13 @@ class ReminderScreen extends StatelessWidget {
                 children: [
                   TextField(
                     controller: titleController,
-                    decoration: InputDecoration(labelText: 'Title'),
+                    decoration: const InputDecoration(labelText: 'Title'),
                   ),
                   TextField(
                     controller: categoryController,
-                    decoration: InputDecoration(labelText: 'Category'),
+                    decoration: const InputDecoration(labelText: 'Category'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.teal),
@@ -104,7 +104,7 @@ class ReminderScreen extends StatelessWidget {
                       categoryController.clear();
                       Get.back();
                     },
-                    child: Text('Add Reminder'),
+                    child: const Text('Add Reminder'),
                   ),
                 ],
               ),

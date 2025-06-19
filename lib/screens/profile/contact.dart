@@ -51,12 +51,12 @@ class _ContactUsPageState extends State<ContactUsPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 22),
+              const SizedBox(height: 22),
               const Text(
                 " Contact us whether you have a suggestion on our improvement, a complain to discuss or an issue to solve. FEEL FREE",
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 28),
+              const SizedBox(height: 28),
 
               // Row of contact options
               Row(
@@ -77,19 +77,19 @@ class _ContactUsPageState extends State<ContactUsPage> {
                             SizedBox(height: 10),
                             Text(
                               'Call Us',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             SizedBox(height: 6),
                             Text(
                               '9864463468',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 13, color: Colors.black54),
                             ),
                             SizedBox(height: 4),
                             Text(
                               '',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 13, color: Colors.black54),
                             ),
                           ],
@@ -112,22 +112,22 @@ class _ContactUsPageState extends State<ContactUsPage> {
                         child: const Column(
                           children: [
                             Icon(Icons.email, size: 36, color: Colors.black),
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10),
                             Text(
                               'Email',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
-                            const SizedBox(height: 6),
+                            SizedBox(height: 6),
                             Text(
                               'shrezana2060@gmail.com',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 13, color: Colors.black54),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             Text(
                               '..........',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 13, color: Colors.black54),
                             ),
                           ],
@@ -137,7 +137,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 48),
+              const SizedBox(height: 48),
 
               const Center(
                 child: Text('FEEL FREE TO CONTACT US ',

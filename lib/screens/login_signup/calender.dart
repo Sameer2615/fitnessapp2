@@ -172,7 +172,7 @@ class _CalenderState extends State<Calender> {
                 calendarBuilders: CalendarBuilders(
                   selectedBuilder: (context, date, _) => Container(
                     margin: const EdgeInsets.all(6.0),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.green, // 👈 background for selected date
                       shape: BoxShape.circle,
                     ),
