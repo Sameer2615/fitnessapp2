@@ -58,7 +58,7 @@ class _DietListState extends State<DietList> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Quantity: ${item['quantity']}'),
+                        Text('Quantity: ${item['quantity']} gm'),
                         Text(
                           proteinText,
                           style: TextStyle(

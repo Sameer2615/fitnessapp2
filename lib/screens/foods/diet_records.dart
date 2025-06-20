@@ -19,6 +19,7 @@ class _DietRoutineState extends State<DietRoutine> {
   final TextEditingController _toTimeController = TextEditingController();
   final TextEditingController _quantityhour = TextEditingController();
   final FavoritesController controller = Get.put(FavoritesController());
+  final FocusNode _foodFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +42,55 @@ class _DietRoutineState extends State<DietRoutine> {
               const SizedBox(
                 height: 8,
               ),
-              TextField(
-                controller: _foodname,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter food name',
-                ),
+              RawAutocomplete<String>(
+                textEditingController: _foodname,
+                focusNode: _foodFocusNode,
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text.isEmpty) {
+                    return const Iterable<String>.empty();
+                  }
+                  return foodList
+                      .map((f) => f.name)
+                      .where((name) => name.toLowerCase().startsWith(
+                            textEditingValue.text.toLowerCase(),
+                          ));
+                },
+                fieldViewBuilder:
+                    (context, controller, focusNode, onFieldSubmitted) {
+                  return TextField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter food name',
+                    ),
+                  );
+                },
+                optionsViewBuilder:
+                    (context, Function(String) onSelected, options) {
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: Material(
+                      elevation: 4.0,
+                      child: SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: options.length,
+                          itemBuilder: (context, index) {
+                            final option = options.elementAt(index);
+                            return ListTile(
+                              title: Text(option),
+                              onTap: () {
+                                onSelected(option);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
               const SizedBox(
                 height: 12,
@@ -99,21 +143,11 @@ class _DietRoutineState extends State<DietRoutine> {
                         return;
                       }
 
-                      controller.addFoodItem(
-                          foodName, quantity); // ✅ Actually adds to list
+                      controller.addFoodItem(foodName, quantity);
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Food Item Added!'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DietList()),
-                      );
+                      Navigator.pop(context);
+                      Get.snackbar('Item added', 'Food item has been added.',
+                          snackPosition: SnackPosition.TOP);
                     },
                     child: const Text('Add Food'),
                     // Set the desired color
