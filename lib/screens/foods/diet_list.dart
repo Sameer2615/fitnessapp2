@@ -17,7 +17,11 @@ class _DietListState extends State<DietList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Your Diet List')),
+        backgroundColor: Theme.of(context).primaryColorDark,
+        appBar: AppBar(
+          title: const Text('Your Diet List'),
+          backgroundColor: Theme.of(context).primaryColorDark,
+        ),
         body: Obx(() {
           if (controller.mealList.isEmpty) {
             return const Center(child: Text('No food items added yet.'));
@@ -52,6 +56,7 @@ class _DietListState extends State<DietList> {
               return GestureDetector(
                 onTap: () => _showDeleteDialog(context, controller, index),
                 child: Card(
+                  color: Theme.of(context).primaryColorLight,
                   margin: const EdgeInsets.all(8.0),
                   child: ListTile(
                     title: Text('Food: $foodName'),

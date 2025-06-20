@@ -146,7 +146,9 @@ class _DietRoutineState extends State<DietRoutine> {
 
                       Navigator.pop(context);
                       Get.snackbar('Item added', 'Food item has been added.',
-                          snackPosition: SnackPosition.TOP);
+                          snackPosition: SnackPosition.TOP,
+                          backgroundColor:
+                              const Color.fromARGB(255, 146, 125, 61));
                     },
                     child: const Text('Add Food'),
                     // Set the desired color

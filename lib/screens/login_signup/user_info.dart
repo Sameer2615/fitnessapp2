@@ -23,6 +23,7 @@ class _UserInfoState extends State<UserInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(8),

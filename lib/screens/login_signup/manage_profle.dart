@@ -96,13 +96,6 @@ class _ManageProfileState extends State<ManageProfile> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       appBar: AppBar(
-        leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-                onPressed: () {
-                  navigatorKey.currentState?.pop();
-                },
-                icon: const Icon(Icons.arrow_back))),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.messenger)),
         ],

@@ -54,19 +54,16 @@ class _ActivityTrackerState extends State<ActivityTracker> {
       'image': 'assets/img/meditation.png',
       'tagi': '2'
     },
-    // {
-    //   'title': 'Legs',
-    //   'exercises': '12 Exercises',
-    //   'time': '60 Minutes',
-    //   'image': 'assets/img/yoga.webp',
-    //   'tagi': '3'
-    // },
   ];
 
-  ///for pedometer concept
+  ///for pedometer concept/////////////////////////////////////////////////////
   /////stream handles asynchronous data its not a data type ok
   late Stream<StepCount> _stepCountStream;
   String _steps = '0';
+  String _calories = '0';
+  //adjust thisif you know thw users weight
+  //0.04 kcal = avergae per step for 65-70kg adult
+  double _calPerStep = 0.04;
   String? selectedValue;
   bool showMonthlyContainer = false;
   String selectedOption = 'Weekly';
@@ -91,9 +88,12 @@ class _ActivityTrackerState extends State<ActivityTracker> {
   }
 
   void _onStepCount(StepCount event) {
-    print('Steps: ${event.steps}');
+    final int stepCount = event.steps;
+    final double calBurned = stepCount * _calPerStep;
+
     setState(() {
-      _steps = event.steps.toString();
+      _steps = stepCount.toString();
+      _calories = calBurned.toStringAsFixed(2); // keep 2 decimals
     });
   }
 
@@ -244,7 +244,7 @@ class _ActivityTrackerState extends State<ActivityTracker> {
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
                         child: CircularPercentIndicator(
-                          lineWidth: 20,
+                          lineWidth: 15,
                           progressColor: Colors.green,
                           percent: 0.7,
                           radius: 50,
@@ -258,31 +258,38 @@ class _ActivityTrackerState extends State<ActivityTracker> {
                     const SizedBox(width: 20),
                     Column(
                       children: [
-                        Text('Steps Walked',
+                        Text('Calories Burned',
                             style: Theme.of(context).textTheme.displaySmall),
                         const SizedBox(height: 4),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.directions_walk,
                               color: Colors.blue,
                             ),
-                            SizedBox(width: 4),
-                            Text('350 Calories'),
-                          ],
-                        ),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Icon(
-                              Icons.timer,
-                              color: Colors.blue,
+                            const SizedBox(width: 4),
+                            Text(
+                              '$_calories ',
+                              style: TextStyle(
+                                color: TColor.black,
+                                fontSize: 19,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                            SizedBox(width: 4),
-                            Text('12,000'),
                           ],
                         ),
+                        // const Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        //   children: [
+                        //     Icon(
+                        //       Icons.timer,
+                        //       color: Colors.blue,
+                        //     ),
+                        //     SizedBox(width: 4),
+                        //     Text('12,000'),
+                        //   ],
+                        // ),
                       ],
                     )
                   ],
@@ -309,7 +316,7 @@ class _ActivityTrackerState extends State<ActivityTracker> {
                   // Dropdown menu
                   DropdownButton<String>(
                     value: selectedOption,
-                    items: ['Progress Monthly', 'Weekly', 'Yearly']
+                    items: ['Weekly', 'Progress Monthly', 'Yearly']
                         .map((option) => DropdownMenuItem(
                               value: option,
                               child: Text(option),

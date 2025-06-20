@@ -66,17 +66,6 @@ class _FrontPageState extends State<FrontPage> {
     ];
   }
 
-  // NotificationServices _notificationServices = NotificationServices();
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   _notificationServices.requestNotificationPermissons();
-  //   _notificationServices.firebaseInit();
-  //   _notificationServices.getDeviceToken().then((value) {
-  //     print("Token number is : $value");
-  //   });
-  // }
   String finalEmail = '';
   @override
   void initState() {
