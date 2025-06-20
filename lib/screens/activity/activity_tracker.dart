@@ -309,7 +309,7 @@ class _ActivityTrackerState extends State<ActivityTracker> {
                   // Dropdown menu
                   DropdownButton<String>(
                     value: selectedOption,
-                    items: ['Progress Monthly', 'Weekly', 'Yearly']
+                    items: ['Weekly', 'Progress Monthly', 'Yearly']
                         .map((option) => DropdownMenuItem(
                               value: option,
                               child: Text(option),

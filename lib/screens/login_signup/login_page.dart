@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                   print('wrong password');
                 } else {
                   scaffoldKey.currentState?.showSnackBar(
-                      SnackBar(content: Text('Shrijana $message')));
+                      SnackBar(content: Text('Sorry you cannot login')));
                 }
               },
               style: ElevatedButton.styleFrom(
