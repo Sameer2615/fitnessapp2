@@ -3,11 +3,11 @@ buildscript {
         google()
         mavenCentral()
     }
-    ext.kotlin_version = '2.1.0' // Or latest stable version
+    ext.kotlin_version = '2.1.20' // Or latest stable version
 
     dependencies {
         classpath 'com.google.gms:google-services:4.4.2'
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.android.tools.build:gradle:8.2.1'
 classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
