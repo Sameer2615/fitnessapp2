@@ -28,57 +28,56 @@ class _ManageProfileState extends State<ManageProfile> {
   User? user;
   DocumentReference<Map<String, dynamic>>? userDoc;
   // late String userId;
-  void _deleteAccountAndLogout() async {
-    try {
-      // Delete user data from Firestore
-      if (userDoc != null) {
-        await userDoc!.delete();
-      }
+  // void _deleteAccountAndLogout() async {
+  //   try {
+  //     // Delete user data from Firestore
+  //     if (userDoc != null) {
+  //       await userDoc!.delete();
+  //     }
 
-      // Delete the user from Firebase Authentication
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        await currentUser.delete();
-      }
+  //     // Delete the user from Firebase Authentication
+  //     final currentUser = FirebaseAuth.instance.currentUser;
+  //     if (currentUser != null) {
+  //       await currentUser.delete();
+  //     }
 
-      // Clear local data (e.g., SharedPreferences)
-      final SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      await sharedPreferences.clear();
+  //     // Clear local data (e.g., SharedPreferences)
+  //     final SharedPreferences sharedPreferences =
+  //         await SharedPreferences.getInstance();
+  //     await sharedPreferences.clear();
 
-      // Navigate to Login Page
-      _navigateToLoginPage();
-    } catch (e) {
-      // Handle errors (e.g., re-authentication required)
-      if (e is FirebaseAuthException && e.code == 'requires-recent-login') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Re-authentication required to delete the account. Please log in again.",
-            ),
-          ),
-        );
-        // Optionally, navigate to the login page for re-authentication
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Error deleting account: ${e.toString()}"),
-          ),
-        );
-      }
-    }
-  }
-
-  void _navigateToLoginPage() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-      (Route<dynamic> route) => false, // Remove all previous routes
-    );
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Account removed!")),
-    );
-  }
+  //     await sharedPreferences.remove('email');
+  //     AuthService.logout();
+  //     // Navigate to Login Page
+  //     Navigator.pushAndRemoveUntil(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => const LoginPage()),
+  //       (Route<dynamic> route) => false, // Remove all previous routes
+  //     );
+  //     ();
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Account removed!")),
+  //     );
+  //   } catch (e) {
+  //     // Handle errors (e.g., re-authentication required)
+  //     if (e is FirebaseAuthException && e.code == 'requires-recent-login') {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           content: Text(
+  //             "Re-authentication required to delete the account. Please log in again.",
+  //           ),
+  //         ),
+  //       );
+  //       // Optionally, navigate to the login page for re-authentication
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text("Error deleting account: ${e.toString()}"),
+  //         ),
+  //       );
+  //     }
+  //   }
+  // }
 
   @override
   //stores the uid of logged-in user
@@ -223,7 +222,61 @@ class _ManageProfileState extends State<ManageProfile> {
                             ),
                             TextButton(
                               onPressed: () async {
-                                _deleteAccountAndLogout();
+                                try {
+                                  // Delete user data from Firestore
+                                  if (userDoc != null) {
+                                    await userDoc!.delete();
+                                  }
+
+                                  // Delete the user from Firebase Authentication
+                                  final currentUser =
+                                      FirebaseAuth.instance.currentUser;
+                                  if (currentUser != null) {
+                                    await currentUser.delete();
+                                  }
+
+                                  // Clear local data (e.g., SharedPreferences)
+                                  final SharedPreferences sharedPreferences =
+                                      await SharedPreferences.getInstance();
+                                  await sharedPreferences.clear();
+
+                                  await sharedPreferences.remove('email');
+                                  AuthService.logout();
+                                  // Navigate to Login Page
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginPage()),
+                                    (Route<dynamic> route) =>
+                                        false, // Remove all previous routes
+                                  );
+                                  ();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Account removed!")),
+                                  );
+                                } catch (e) {
+                                  // Handle errors (e.g., re-authentication required)
+                                  if (e is FirebaseAuthException &&
+                                      e.code == 'requires-recent-login') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Re-authentication required to delete the account. Please log in again.",
+                                        ),
+                                      ),
+                                    );
+                                    // Optionally, navigate to the login page for re-authentication
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            "Error deleting account: ${e.toString()}"),
+                                      ),
+                                    );
+                                  }
+                                }
                               },
                               child: const Text("Confirm"),
                             ),
