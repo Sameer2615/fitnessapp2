@@ -1,5 +1,4 @@
 import 'package:fitnessapp/screens/foods/controller.dart';
-import 'package:fitnessapp/screens/foods/diet_list.dart';
 import 'package:fitnessapp/screens/foods/food_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +36,7 @@ class _DietRoutineState extends State<DietRoutine> {
               const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Food Name',
+                    'Food Name :',
                   )),
               const SizedBox(
                 height: 8,
@@ -98,7 +97,7 @@ class _DietRoutineState extends State<DietRoutine> {
               const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Quantity (in grams)',
+                    'Quantity (in grams) :',
                   )),
               const SizedBox(
                 height: 8,
