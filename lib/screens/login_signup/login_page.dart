@@ -4,6 +4,9 @@ import 'package:fitnessapp/screens/login_signup/signup_page.dart';
 import 'package:fitnessapp/firebase_services/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessapp/main.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -99,8 +102,9 @@ class _LoginPageState extends State<LoginPage> {
                     'Wrong password provided for that user.') {
                   print('wrong password');
                 } else {
-                  scaffoldKey.currentState?.showSnackBar(
-                      SnackBar(content: Text('Sorry you cannot login')));
+                  Get.snackbar('Sorry', ' login failed',
+                      snackPosition: SnackPosition.TOP,
+                      backgroundColor: const Color.fromARGB(255, 146, 125, 61));
                 }
               },
               style: ElevatedButton.styleFrom(
