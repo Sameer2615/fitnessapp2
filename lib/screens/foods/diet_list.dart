@@ -43,14 +43,18 @@ class _DietListState extends State<DietList> {
                     )
                   : null;
 
+              double quantity = double.tryParse(item['quantity'] ?? '0') ?? 0;
+
               final String proteinText = matchedFood != null
-                  ? 'Protein : ${matchedFood.proteinvalue} gm '
+                  ? 'Protein: ${(matchedFood.proteinvalue * quantity / 100).toStringAsFixed(2)} g'
                   : 'Food "$foodName" does not exist';
+
               final String carbsText = matchedFood != null
-                  ? 'Carbs : ${matchedFood.carbsvalue} gm '
+                  ? 'Carbs: ${(matchedFood.carbsvalue * quantity / 100).toStringAsFixed(2)} g'
                   : 'Food "$foodName" does not exist';
+
               final String calorieText = matchedFood != null
-                  ? 'Calorie : ${matchedFood.calorie} '
+                  ? 'Calorie: ${(double.tryParse(matchedFood.calorie.replaceAll(RegExp(r'[^0-9.]'), ''))! * quantity / 100).toStringAsFixed(0)} Kcal'
                   : 'Food "$foodName" does not exist';
 
               return GestureDetector(
@@ -63,7 +67,7 @@ class _DietListState extends State<DietList> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Quantity: ${item['quantity']} gm'),
+                        Text('Quantity: ${item['quantity']} g'),
                         Text(
                           proteinText,
                           style: TextStyle(
@@ -85,6 +89,8 @@ class _DietListState extends State<DietList> {
                                 matchedFood != null ? Colors.black : Colors.red,
                           ),
                         ),
+                        Text(
+                            '${controller.totalCalories.value.toStringAsFixed(0)} Kcal')
                       ],
                     ),
                   ),
@@ -123,7 +129,8 @@ void _showDeleteDialog(
         ),
         ElevatedButton(
           onPressed: () {
-            controller.mealList.removeAt(index);
+            controller.removeFoodItem(index);
+
             Navigator.pop(context);
             Get.snackbar('Removed', 'Food item has been removed.',
                 snackPosition: SnackPosition.BOTTOM);
