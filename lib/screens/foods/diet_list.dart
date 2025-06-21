@@ -32,7 +32,6 @@ class _DietListState extends State<DietList> {
             itemBuilder: (context, index) {
               final item = controller.mealList[index];
               final String foodName = item['name']?.trim() ?? '';
-
               // Find match in predefined foodList
               final matchedFood = foodList.any(
                 (food) => food.name.toLowerCase() == foodName.toLowerCase(),
@@ -57,42 +56,90 @@ class _DietListState extends State<DietList> {
                   ? 'Calorie: ${(double.tryParse(matchedFood.calorie.replaceAll(RegExp(r'[^0-9.]'), ''))! * quantity / 100).toStringAsFixed(0)} Kcal'
                   : 'Food "$foodName" does not exist';
 
-              return GestureDetector(
-                onTap: () => _showDeleteDialog(context, controller, index),
-                child: Card(
-                  color: Theme.of(context).primaryColorLight,
-                  margin: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    title: Text('Food: $foodName'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Quantity: ${item['quantity']} g'),
-                        Text(
-                          proteinText,
-                          style: TextStyle(
-                            color:
-                                matchedFood != null ? Colors.black : Colors.red,
-                          ),
+              final String fatText = matchedFood != null
+                  ? 'Fats: ${(matchedFood.fatsvalue * quantity / 100).toStringAsFixed(2)} g'
+                  : 'Food "$foodName" does not exist';
+
+              return Card(
+                color: Theme.of(context)
+                    .primaryColorLight, // ✅ Keep original background
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: matchedFood != null
+                            ? Image.asset(
+                                matchedFood.image1,
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: 60,
+                                    height: 60,
+                                    color: Colors.grey[300],
+                                    child: const Icon(Icons.broken_image),
+                                  );
+                                },
+                              )
+                            : Container(
+                                width: 60,
+                                height: 60,
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.broken_image),
+                              ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              foodName,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Quantity: ${item['quantity']} g',
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            Text(
+                              proteinText,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            Text(
+                              carbsText,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            Text(
+                              fatText,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            Text(
+                              calorieText,
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                          ],
                         ),
-                        Text(
-                          carbsText,
-                          style: TextStyle(
-                            color:
-                                matchedFood != null ? Colors.black : Colors.red,
-                          ),
-                        ),
-                        Text(
-                          calorieText,
-                          style: TextStyle(
-                            color:
-                                matchedFood != null ? Colors.black : Colors.red,
-                          ),
-                        ),
-                        Text(
-                            '${controller.totalCalories.value.toStringAsFixed(0)} Kcal')
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.redAccent),
+                        onPressed: () =>
+                            _showDeleteDialog(context, controller, index),
+                      )
+                    ],
                   ),
                 ),
               );

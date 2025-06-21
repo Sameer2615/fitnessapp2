@@ -300,7 +300,7 @@ class NutrientsController extends GetxController {
         print('No match for "$name" in foodList.');
       }
     }
-    print('total :${total} ');
+    print('total :$total ');
     totalCalories.value = total;
     print('🔥 Total Calories = ${totalCalories.value.toStringAsFixed(2)} kcal');
     saveTotalCalories();
