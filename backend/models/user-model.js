@@ -1,6 +1,3 @@
-const mongoose = require("mongoose");
-
-// src/models/userModel.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -22,7 +19,7 @@ const userSchema = new mongoose.Schema({
     verification_token: {
         type: String,
         unique: true,
-        sparse: true, // Allows null values, but still enforces uniqueness for non-null
+        sparse: true, // Allows null values, but still provides uniqueness for non-null
     },
     createdAt: {
         type: Date,
@@ -34,7 +31,7 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-// Update `updatedAt` field on save
+// to update `updatedAt` field on save
 userSchema.pre('save', function(next) {
     this.updatedAt = Date.now();
     next();
@@ -42,7 +39,7 @@ userSchema.pre('save', function(next) {
 
 const User = mongoose.model('User', userSchema);
 
-// --- Now the "model" functions for the controller to use ---
+// the "model" functions for the controller to use
 
 const createUser = async (email, hashedPassword, verificationToken) => {
     const newUser = new User({
