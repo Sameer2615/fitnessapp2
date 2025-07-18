@@ -1,76 +1,47 @@
-const mongoose = require('mongoose');
-const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt"); // Make sure you have bcrypt installed: npm install bcrypt
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true,
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
     password: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     is_verified: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     verification_token: {
-        type: String,
-        unique: true,
-        sparse: true, // Allows null values, but still provides uniqueness for non-null
+      type: String,
+      unique: true,
+      sparse: true, // Allows null values, but still provides uniqueness for non-null
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
+  },
+  { timestamps: true }
+);
+
+
+userSchema.pre("save", async function (next) {
+  // Only hash if the password field is modified
+  if (this.isModified("password")) {
+    const salt = await bcrypt.genSalt(10); // Generate a salt
+    this.password = await bcrypt.hash(this.password, salt); // Hash the password
+  }
+  next();
 });
 
-// to update `updatedAt` field on save
-userSchema.pre('save', function(next) {
-    this.updatedAt = Date.now();
-    next();
-});
 
-const User = mongoose.model('User', userSchema);
-
-// the "model" functions for the controller to use
-
-const createUser = async (email, hashedPassword, verificationToken) => {
-    const newUser = new User({
-        email,
-        password: hashedPassword,
-        verification_token: verificationToken,
-    });
-    return await newUser.save();
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
 };
 
-const findUserByEmail = async (email) => {
-    return await User.findOne({ email });
-};
-
-const findUserByVerificationToken = async (token) => {
-    return await User.findOne({ verification_token: token });
-};
-
-const updateUserVerificationStatus = async (userId) => {
-    return await User.findByIdAndUpdate(
-        userId,
-        { $set: { is_verified: true, verification_token: null } },
-        { new: true } // Return the updated document
-    );
-};
-
-module.exports = {
-    createUser,
-    findUserByEmail,
-    findUserByVerificationToken,
-    updateUserVerificationStatus,
-};
-// Export the User model to use in other parts of the application
+// Export the User Mongoose model DIRECTLY
+const User = mongoose.model("User", userSchema);
+module.exports = User;

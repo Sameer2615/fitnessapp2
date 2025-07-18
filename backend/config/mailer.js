@@ -4,8 +4,8 @@ const keys = require("./keys");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: config.EMAIL_USER,
-    pass: config.EMAIL_PASS,
+    user: keys.EMAIL_USER,
+    pass: keys.EMAIL_PASS,
   },
 });
 
