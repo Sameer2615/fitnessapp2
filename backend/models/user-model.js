@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -72,4 +73,4 @@ module.exports = {
     findUserByVerificationToken,
     updateUserVerificationStatus,
 };
-// Export the User model for use in other parts of the application
+// Export the User model to use in other parts of the application
