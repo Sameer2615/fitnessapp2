@@ -327,20 +327,4 @@ List<Food> foodList = [
     sfat: '0.0g',
     ufat: '0.4g',
   ),
-  const Food(
-    name: 'Dragon Fruit',
-    image1: 'assets/img/dragonfruit1.avif',
-    image2: 'assets/img/dragonfruit2.jpg',
-    proteinvalue: 1.2,
-    carbsvalue: 13.0,
-    fatsvalue: 0.4,
-    description:
-        'Tropical fruit with prebiotic fiber and betalain antioxidants. Supports gut microbiome diversity. Mildly sweet with striking appearance.',
-    calorie: '60 Kcal',
-    protein: '1.2g',
-    carbs: '13.0g',
-    tfat: '0.4g',
-    sfat: '0.0g',
-    ufat: '0.4g',
-  ),
 ];

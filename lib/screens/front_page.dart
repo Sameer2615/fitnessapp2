@@ -32,7 +32,6 @@ class _FrontPageState extends State<FrontPage> {
   List<Widget> _buildScreens() {
     return [
       const ActivityTracker(),
-      // const Calender(),
       SetGoal(),
       const BreakFast(),
       const ProfileView(),
@@ -50,17 +49,17 @@ class _FrontPageState extends State<FrontPage> {
           activeColorPrimary: Colors.purple),
       PersistentBottomNavBarItem(
           icon: const Icon(Icons.menu_book_sharp),
-          title: "Dashboard",
+          title: "Activity",
           inactiveColorPrimary: Colors.grey.shade600,
           activeColorPrimary: Colors.purple),
       PersistentBottomNavBarItem(
-          icon: const Icon(Icons.home),
+          icon: const Icon(Icons.food_bank),
           inactiveColorPrimary: Colors.grey,
-          title: "Home",
+          title: "Meal",
           activeColorPrimary: Colors.purple),
       PersistentBottomNavBarItem(
           icon: const Icon(Icons.more_horiz),
-          title: "Home",
+          title: "Profile",
           inactiveColorPrimary: Colors.grey.shade600,
           activeColorPrimary: Colors.purple),
     ];
