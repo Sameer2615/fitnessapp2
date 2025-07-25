@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:fitnessapp/login_signup/login_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,7 +28,15 @@ import 'package:fitnessapp/generated/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<ScaffoldMessengerState> scaffoldKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await LocalNotification.init();
+  // Get.lazyPut(() => FavoritesController());
+  await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
   LoggerConfig.intiLogger();
   await initLocator();
@@ -72,6 +82,8 @@ class OpenNutriTrackerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
+      scaffoldMessengerKey: scaffoldKey,
       onGenerateTitle: (context) => S.of(context).appTitle,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -94,7 +106,7 @@ class OpenNutriTrackerApp extends StatelessWidget {
           ? NavigationOptions.mainRoute
           : NavigationOptions.onboardingRoute,
       routes: {
-        NavigationOptions.mainRoute: (context) => const MainScreen(),
+        NavigationOptions.mainRoute: (context) => const LoginPage(),
         NavigationOptions.onboardingRoute: (context) =>
             const OnboardingScreen(),
         NavigationOptions.settingsRoute: (context) => const SettingsScreen(),

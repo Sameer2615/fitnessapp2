@@ -1,3 +1,5 @@
+import 'package:fitnessapp/login_signup/login_page.dart';
+import 'package:fitnessapp/login_signup/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -38,6 +40,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool _thirdPageButtonActive = false;
   bool _fourthPageButtonActive = false;
   bool _overviewPageButtonActive = false;
+  bool _signUpPageButtonActive = false;
+  void _setSignUpPageData(bool active) {
+    setState(() {
+      _signUpPageButtonActive = active;
+    });
+  }
 
   @override
   void initState() {
@@ -94,101 +102,132 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   List<PageViewModel> _getPageViewModels() => <PageViewModel>[
+        // 0. Intro
         PageViewModel(
-            title: S.of(context).onboardingWelcomeLabel,
-            decoration: _pageDecoration,
-            image: _defaultImageWidget,
-            bodyWidget: OnboardingIntroPageBody(
-              setPageContent: _setIntroPageData,
-            ),
-            footer: HighlightButton(
-              buttonLabel: S.of(context).buttonStartLabel,
-              onButtonPressed: () => _scrollToPage(1),
-              buttonActive: _introPageButtonActive,
-            )),
+          title: S.of(context).onboardingWelcomeLabel,
+          decoration: _pageDecoration,
+          image: _defaultImageWidget,
+          bodyWidget: OnboardingIntroPageBody(
+            setPageContent: _setIntroPageData,
+          ),
+          footer: HighlightButton(
+            buttonLabel: S.of(context).buttonStartLabel,
+            onButtonPressed: () => _scrollToPage(1),
+            buttonActive: _introPageButtonActive,
+          ),
+        ),
+
+        // 1. Signup Page
         PageViewModel(
-            titleWidget: const SizedBox(),
-            // empty
-            decoration: _pageDecoration,
-            image: _defaultImageWidget,
-            bodyWidget: OnboardingFirstPageBody(
-              setPageContent: _setFirstPageData,
-            ),
-            footer: HighlightButton(
-              buttonLabel: S.of(context).buttonNextLabel,
-              onButtonPressed: () => _scrollToPage(2),
-              buttonActive: _firstPageButtonActive,
-            )),
+          titleWidget: const SizedBox(),
+          decoration: _pageDecoration,
+          image: _defaultImageWidget,
+          bodyWidget: SignupPage(), // Your custom signup page
+          footer: HighlightButton(
+            buttonLabel: S.of(context).buttonNextLabel,
+            onButtonPressed: () => _scrollToPage(2),
+            buttonActive: true, // Enable this if no state control required
+          ),
+        ),
+
+        // 2. Gender + DOB
         PageViewModel(
-            titleWidget: const SizedBox(),
-            // empty
-            decoration: _pageDecoration,
-            image: _defaultImageWidget,
-            bodyWidget: OnboardingSecondPageBody(
-              setButtonContent: _setSecondPageData,
-            ),
-            footer: HighlightButton(
-              buttonLabel: S.of(context).buttonNextLabel,
-              onButtonPressed: () => _scrollToPage(3),
-              buttonActive: _secondPageButtonActive,
-            )),
+          titleWidget: const SizedBox(),
+          decoration: _pageDecoration,
+          image: _defaultImageWidget,
+          bodyWidget: OnboardingFirstPageBody(
+            setPageContent: _setFirstPageData,
+          ),
+          footer: HighlightButton(
+            buttonLabel: S.of(context).buttonNextLabel,
+            onButtonPressed: () => _scrollToPage(3),
+            buttonActive: _firstPageButtonActive,
+          ),
+        ),
+
+        // 3. Height/Weight
         PageViewModel(
-            titleWidget: const SizedBox(),
-            // empty
-            decoration: _pageDecoration,
-            image: _defaultImageWidget,
-            bodyWidget: OnboardingThirdPageBody(
-              setButtonContent: _setThirdPageButton,
-            ),
-            footer: HighlightButton(
-              buttonLabel: S.of(context).buttonNextLabel,
-              onButtonPressed: () => _scrollToPage(4),
-              buttonActive: _thirdPageButtonActive,
-            )),
+          titleWidget: const SizedBox(),
+          decoration: _pageDecoration,
+          image: _defaultImageWidget,
+          bodyWidget: OnboardingSecondPageBody(
+            setButtonContent: _setSecondPageData,
+          ),
+          footer: HighlightButton(
+            buttonLabel: S.of(context).buttonNextLabel,
+            onButtonPressed: () => _scrollToPage(4),
+            buttonActive: _secondPageButtonActive,
+          ),
+        ),
+
+        // 4. Activity
         PageViewModel(
-            titleWidget: const SizedBox(),
-            // empty
-            decoration: _pageDecoration,
-            image: _defaultImageWidget,
-            bodyWidget: OnboardingFourthPageBody(
-              setButtonContent: _setFourthPageButton,
-            ),
-            footer: HighlightButton(
-              buttonLabel: S.of(context).buttonNextLabel,
-              onButtonPressed: () => _scrollToPage(5),
-              buttonActive: _fourthPageButtonActive,
-            )),
+          titleWidget: const SizedBox(),
+          decoration: _pageDecoration,
+          image: _defaultImageWidget,
+          bodyWidget: OnboardingThirdPageBody(
+            setButtonContent: _setThirdPageButton,
+          ),
+          footer: HighlightButton(
+            buttonLabel: S.of(context).buttonNextLabel,
+            onButtonPressed: () => _scrollToPage(5),
+            buttonActive: _thirdPageButtonActive,
+          ),
+        ),
+
+        // 5. Goal
         PageViewModel(
-            titleWidget: const SizedBox(),
-            // empty
-            decoration: _pageDecoration,
-            image: _defaultImageWidget,
-            bodyWidget: OnboardingOverviewPageBody(
-              calorieGoalDayString: _onboardingBloc
-                      .getOverviewCalorieGoal()
-                      ?.toInt()
-                      .toString() ??
-                  "?",
-              carbsGoalString:
-                  _onboardingBloc.getOverviewCarbsGoal()?.toInt().toString() ??
-                      "?",
-              fatGoalString:
-                  _onboardingBloc.getOverviewFatGoal()?.toInt().toString() ??
-                      "?",
-              proteinGoalString: _onboardingBloc
-                      .getOverviewProteinGoal()
-                      ?.toInt()
-                      .toString() ??
-                  "?",
-              setButtonActive: _setOverviewPageContent,
-            ),
-            footer: HighlightButton(
-              buttonLabel: S.of(context).buttonStartLabel,
-              onButtonPressed: () {
-                _onOverviewStartButtonPressed(context);
-              },
-              buttonActive: _overviewPageButtonActive,
-            )),
+          titleWidget: const SizedBox(),
+          decoration: _pageDecoration,
+          image: _defaultImageWidget,
+          bodyWidget: OnboardingFourthPageBody(
+            setButtonContent: _setFourthPageButton,
+          ),
+          footer: HighlightButton(
+            buttonLabel: S.of(context).buttonNextLabel,
+            onButtonPressed: () => _scrollToPage(6),
+            buttonActive: _fourthPageButtonActive,
+          ),
+        ),
+
+        // 6. Overview Page
+        PageViewModel(
+          titleWidget: const SizedBox(),
+          decoration: _pageDecoration,
+          image: _defaultImageWidget,
+          bodyWidget: OnboardingOverviewPageBody(
+            calorieGoalDayString:
+                _onboardingBloc.getOverviewCalorieGoal()?.toInt().toString() ??
+                    "?",
+            carbsGoalString:
+                _onboardingBloc.getOverviewCarbsGoal()?.toInt().toString() ??
+                    "?",
+            fatGoalString:
+                _onboardingBloc.getOverviewFatGoal()?.toInt().toString() ?? "?",
+            proteinGoalString:
+                _onboardingBloc.getOverviewProteinGoal()?.toInt().toString() ??
+                    "?",
+            setButtonActive: _setOverviewPageContent,
+          ),
+          footer: HighlightButton(
+            buttonLabel: S.of(context).buttonNextLabel,
+            onButtonPressed: () => _scrollToPage(7), // Goes to login now
+            buttonActive: _overviewPageButtonActive,
+          ),
+        ),
+
+        // 7. Login Page
+        PageViewModel(
+          titleWidget: const SizedBox(),
+          decoration: _pageDecoration,
+          image: _defaultImageWidget,
+          bodyWidget: const LoginPage(),
+          footer: HighlightButton(
+            buttonLabel: "Finish",
+            onButtonPressed: () => _onOverviewStartButtonPressed(context),
+            buttonActive: true,
+          ),
+        ),
       ];
 
   void _scrollToPage(int page) {
