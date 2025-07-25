@@ -89,12 +89,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () => _showReportErrorDialog(context),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.policy_outlined),
-                  title: Text(S.of(context).settingsPrivacySettings),
-                  onTap: () =>
-                      _showPrivacyDialog(context, state.sendAnonymousData),
-                ),
-                ListTile(
                   leading: const Icon(Icons.error_outline_outlined),
                   title: Text(S.of(context).settingAboutLabel),
                   onTap: () => _showAboutDialog(context),
