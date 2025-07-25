@@ -137,6 +137,7 @@ flutter:
     - assets/img1/img/
     - assets/angle_pose_model.tflite
     - assets/label_map.json
+    - assets/icon/ont_logo_square_light.png
 
     # - images/a_dot_ham.jpeg
 

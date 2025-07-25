@@ -1,9 +1,7 @@
 import 'package:fitnessapp/login_signup/login_page.dart';
 
-import 'package:fitnessapp/login_signup/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessapp/firebase_services/firebase_auth.dart';
-import 'package:fitnessapp/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'package:instagram_clone/data/firebase_service/firebase_auth.dart';

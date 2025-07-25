@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitnessapp/core/presentation/main_screen.dart';
 import 'package:fitnessapp/login_signup/login_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:logging/logging.dart';
 import 'package:fitnessapp/core/data/data_source/user_data_source.dart';
 import 'package:fitnessapp/core/data/repository/config_repository.dart';
 import 'package:fitnessapp/core/domain/entity/app_theme_entity.dart';
-import 'package:fitnessapp/core/presentation/main_screen.dart';
 import 'package:fitnessapp/core/presentation/widgets/image_full_screen.dart';
 import 'package:fitnessapp/core/styles/color_schemes.dart';
 import 'package:fitnessapp/core/styles/fonts.dart';
@@ -72,12 +72,12 @@ void runAppWithChangeNotifiers(
         bool userInitialized, AppThemeEntity savedAppTheme) =>
     runApp(ChangeNotifierProvider(
         create: (_) => ThemeModeProvider(appTheme: savedAppTheme),
-        child: OpenNutriTrackerApp(userInitialized: userInitialized)));
+        child: FitTrack(userInitialized: userInitialized)));
 
-class OpenNutriTrackerApp extends StatelessWidget {
+class FitTrack extends StatelessWidget {
   final bool userInitialized;
 
-  const OpenNutriTrackerApp({super.key, required this.userInitialized});
+  const FitTrack({super.key, required this.userInitialized});
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,7 @@ class OpenNutriTrackerApp extends StatelessWidget {
           ? NavigationOptions.mainRoute
           : NavigationOptions.onboardingRoute,
       routes: {
-        NavigationOptions.mainRoute: (context) => const LoginPage(),
+        NavigationOptions.mainRoute: (context) => const MainScreen(),
         NavigationOptions.onboardingRoute: (context) =>
             const OnboardingScreen(),
         NavigationOptions.settingsRoute: (context) => const SettingsScreen(),

@@ -222,11 +222,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           decoration: _pageDecoration,
           image: _defaultImageWidget,
           bodyWidget: const LoginPage(),
-          footer: HighlightButton(
-            buttonLabel: "Finish",
-            onButtonPressed: () => _onOverviewStartButtonPressed(context),
-            buttonActive: true,
-          ),
+          // footer: HighlightButton(
+          //   buttonLabel: "Finish",
+          //   onButtonPressed: () => _onOverviewStartButtonPressed(context),
+          //   buttonActive: true,
+          // ),
         ),
       ];
 

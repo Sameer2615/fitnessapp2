@@ -50,10 +50,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `OpenNutriTracker`
+  /// `FitTrack`
   String get appTitle {
     return Intl.message(
-      'OpenNutriTracker',
+      'FitTrack',
       name: 'appTitle',
       desc: '',
       args: [],
@@ -70,10 +70,10 @@ class S {
     );
   }
 
-  /// `OpenNutriTracker is a free and open-source calorie and nutrient tracker that respects your privacy.`
+  /// `FitTrack is a free and open-source calorie and nutrient tracker that respects your privacy.`
   String get appDescription {
     return Intl.message(
-      'OpenNutriTracker is a free and open-source calorie and nutrient tracker that respects your privacy.',
+      'FitTrack is a free and open-source calorie and nutrient tracker that respects your privacy.',
       name: 'appDescription',
       desc: '',
       args: [],
@@ -570,6 +570,16 @@ class S {
     );
   }
 
+  /// `Yoga Pose`
+  String get settingsYogaPose {
+    return Intl.message(
+      'Yoga Pose',
+      name: 'settingsYogaPose ',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Light`
   String get settingsThemeLightLabel {
     return Intl.message(
@@ -730,10 +740,10 @@ class S {
     );
   }
 
-  /// `OpenNutriTracker is not a medical application. All data provided is not validated and should be used with caution. Please maintain a healthy lifestyle and consult a professional if you have any problems. Use during illness, pregnancy or lactation is not recommended.`
+  /// `FitTrack is not a medical application. All data provided is not validated and should be used with caution. Please maintain a healthy lifestyle and consult a professional if you have any problems. Use during illness, pregnancy or lactation is not recommended.`
   String get disclaimerText {
     return Intl.message(
-      'OpenNutriTracker is not a medical application. All data provided is not validated and should be used with caution. Please maintain a healthy lifestyle and consult a professional if you have any problems. Use during illness, pregnancy or lactation is not recommended.',
+      'FitTrack is not a medical application. All data provided is not validated and should be used with caution. Please maintain a healthy lifestyle and consult a professional if you have any problems. Use during illness, pregnancy or lactation is not recommended.',
       name: 'disclaimerText',
       desc: '',
       args: [],

@@ -1,3 +1,4 @@
+import 'package:fitnessapp/services/utils/yoga_pose.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fitnessapp/core/domain/entity/app_theme_entity.dart';
@@ -78,14 +79,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () => _showThemeDialog(context, state.appTheme),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.import_export),
-                  title: Text(S.of(context).exportImportLabel),
-                  onTap: () => _showExportImportDialog(context),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.description_outlined),
-                  title: Text(S.of(context).settingsDisclaimerLabel),
-                  onTap: () => _showDisclaimerDialog(context),
+                  leading: const Icon(Icons.self_improvement),
+                  title: Text(S.of(context).settingsYogaPose),
+                  onTap: () => _showYogaPose(),
                 ),
                 ListTile(
                   leading: const Icon(Icons.bug_report_outlined),
@@ -258,6 +254,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           );
         });
+  }
+
+  void _showYogaPose() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PoseViewerPage()),
+    );
   }
 
   void _showDisclaimerDialog(BuildContext context) {
