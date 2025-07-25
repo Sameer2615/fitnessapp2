@@ -1,116 +1,115 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:fitnessapp/local_notification/awesome_notification.dart';
-import 'package:fitnessapp/screens/front_page.dart';
-import 'package:timezone/data/latest.dart' as tz;
-// import 'package:fitnessapp/screens/profile.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:logging/logging.dart';
+import 'package:fitnessapp/core/data/data_source/user_data_source.dart';
+import 'package:fitnessapp/core/data/repository/config_repository.dart';
+import 'package:fitnessapp/core/domain/entity/app_theme_entity.dart';
+import 'package:fitnessapp/core/presentation/main_screen.dart';
+import 'package:fitnessapp/core/presentation/widgets/image_full_screen.dart';
+import 'package:fitnessapp/core/styles/color_schemes.dart';
+import 'package:fitnessapp/core/styles/fonts.dart';
+import 'package:fitnessapp/core/utils/env.dart';
+import 'package:fitnessapp/core/utils/locator.dart';
+import 'package:fitnessapp/core/utils/logger_config.dart';
+import 'package:fitnessapp/core/utils/navigation_options.dart';
+import 'package:fitnessapp/core/utils/theme_mode_provider.dart';
+import 'package:fitnessapp/features/activity_detail/activity_detail_screen.dart';
+import 'package:fitnessapp/features/add_meal/presentation/add_meal_screen.dart';
+import 'package:fitnessapp/features/add_activity/presentation/add_activity_screen.dart';
+import 'package:fitnessapp/features/edit_meal/presentation/edit_meal_screen.dart';
+import 'package:fitnessapp/features/onboarding/onboarding_screen.dart';
+import 'package:fitnessapp/features/scanner/scanner_screen.dart';
+import 'package:fitnessapp/features/meal_detail/meal_detail_screen.dart';
+import 'package:fitnessapp/features/settings/settings_screen.dart';
+import 'package:fitnessapp/generated/l10n.dart';
+import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<ScaffoldMessengerState> scaffoldKey =
-    GlobalKey<ScaffoldMessengerState>();
-
-void main() async {
-  tz.initializeTimeZones();
-  //connecting project with firebase
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await LocalNotification.init();
-  // Get.lazyPut(() => FavoritesController());
-  await Firebase.initializeApp();
-  // final fcmToken = await FirebaseMessaging.instance.getToken();
-  // print('HELLO');
-  // print(fcmToken);
-  await AwesomeNotifications().initialize(
-    null, // icon for your app notification
-    [
-      NotificationChannel(
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
-        defaultColor: Colors.teal,
-        ledColor: Colors.white,
-        importance: NotificationImportance.High,
-        channelShowBadge: true,
-      ),
-      NotificationChannel(
-        channelKey: 'scheduled_channel',
-        channelName: 'Scheduled notifications',
-        channelDescription: 'Notification channel for schedule tests',
-        defaultColor: Colors.teal,
-        ledColor: Colors.white,
-        importance: NotificationImportance.High,
-      ),
-    ],
-    debug: true,
-  );
+  LoggerConfig.intiLogger();
+  await initLocator();
+  final isUserInitialized = await locator<UserDataSource>().hasUserData();
+  final configRepo = locator<ConfigRepository>();
+  final hasAcceptedAnonymousData =
+      await configRepo.getConfigHasAcceptedAnonymousData();
+  final savedAppTheme = await configRepo.getConfigAppTheme();
+  final log = Logger('main');
 
-  // Check if user has granted notification permission globally
-  await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-    if (!isAllowed) {
-      AwesomeNotifications().requestPermissionToSendNotifications();
-    }
-  });
-  // Listen to notification taps/actions globally
-  // AwesomeNotifications().actionStream.listen((receivedNotification) {
-  //   print('Notification tapped: ${receivedNotification.payload}');
-  //   // Navigate or perform actions based on notification
-  // });
-  // setupNotificationListeners();
-  AwesomeNotification notification = AwesomeNotification();
-  notification.setupNotificationActionListeners();
-  runApp(const MyApp());
+  // If the user has accepted anonymous data collection, run the app with
+  // sentry enabled, else run without it
+  if (kReleaseMode && hasAcceptedAnonymousData) {
+    log.info('Starting App with Sentry enabled ...');
+    _runAppWithSentryReporting(isUserInitialized, savedAppTheme);
+  } else {
+    log.info('Starting App ...');
+    runAppWithChangeNotifiers(isUserInitialized, savedAppTheme);
+  }
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
+void _runAppWithSentryReporting(
+    bool isUserInitialized, AppThemeEntity savedAppTheme) async {
+  await SentryFlutter.init((options) {
+    options.dsn = Env.sentryDns;
+    options.tracesSampleRate = 1.0;
+  },
+      appRunner: () =>
+          runAppWithChangeNotifiers(isUserInitialized, savedAppTheme));
 }
 
-class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+void runAppWithChangeNotifiers(
+        bool userInitialized, AppThemeEntity savedAppTheme) =>
+    runApp(ChangeNotifierProvider(
+        create: (_) => ThemeModeProvider(appTheme: savedAppTheme),
+        child: OpenNutriTrackerApp(userInitialized: userInitialized)));
+
+class OpenNutriTrackerApp extends StatelessWidget {
+  final bool userInitialized;
+
+  const OpenNutriTrackerApp({super.key, required this.userInitialized});
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey,
-        scaffoldMessengerKey: scaffoldKey,
-        title: 'Flutter Demo',
-        home: const FrontPage(),
-        theme: ThemeData(
-          textTheme: const TextTheme(
-            displayLarge: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2.0,
-              color: Colors.white,
-            ),
-            titleLarge: TextStyle(
-                color: Colors.black, fontSize: 36, fontWeight: FontWeight.bold),
-            titleSmall: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              // letterSpacing: 1.0,
-              color: Color.fromARGB(255, 32, 30, 30),
-            ),
-            displaySmall: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              // letterSpacing: 1.0,
-              color: Color.fromARGB(255, 32, 30, 30),
-            ),
-          ),
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple, primary: Colors.black),
-          // primary: const Color.fromARGB(255, 252, 227, 138)),
-          primaryColorDark:
-              const Color.fromARGB(255, 184, 216, 201), //soft green color,
-          primaryColorLight: const Color.fromARGB(255, 237, 234, 215),
-
+    return MaterialApp(
+      onGenerateTitle: (context) => S.of(context).appTitle,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
           useMaterial3: true,
-        ));
+          colorScheme: lightColorScheme,
+          textTheme: appTextTheme),
+      darkTheme: ThemeData(
+          useMaterial3: true,
+          colorScheme: darkColorScheme,
+          textTheme: appTextTheme),
+      themeMode: Provider.of<ThemeModeProvider>(context).themeMode,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      initialRoute: userInitialized
+          ? NavigationOptions.mainRoute
+          : NavigationOptions.onboardingRoute,
+      routes: {
+        NavigationOptions.mainRoute: (context) => const MainScreen(),
+        NavigationOptions.onboardingRoute: (context) =>
+            const OnboardingScreen(),
+        NavigationOptions.settingsRoute: (context) => const SettingsScreen(),
+        NavigationOptions.addMealRoute: (context) => const AddMealScreen(),
+        NavigationOptions.scannerRoute: (context) => const ScannerScreen(),
+        NavigationOptions.mealDetailRoute: (context) =>
+            const MealDetailScreen(),
+        NavigationOptions.editMealRoute: (context) => const EditMealScreen(),
+        NavigationOptions.addActivityRoute: (context) =>
+            const AddActivityScreen(),
+        NavigationOptions.activityDetailRoute: (context) =>
+            const ActivityDetailScreen(),
+        NavigationOptions.imageFullScreenRoute: (context) =>
+            const ImageFullScreen(),
+      },
+    );
   }
 }
