@@ -79,42 +79,49 @@ class _PoseCameraScreenState extends State<PoseCameraScreen> {
   }
 
   Future<void> _processCameraImage(CameraImage image) async {
-    final WriteBuffer allBytes = WriteBuffer();
-    for (var plane in image.planes) {
-      allBytes.putUint8List(plane.bytes);
+    try {
+      final WriteBuffer allBytes = WriteBuffer();
+      for (var plane in image.planes) {
+        allBytes.putUint8List(plane.bytes);
+      }
+      final bytes = allBytes.done().buffer.asUint8List();
+
+      // Write image bytes to file
+      final directory = await getTemporaryDirectory();
+      final filePath = '${directory.path}/temp.jpg';
+      final file = File(filePath);
+      await file.writeAsBytes(bytes);
+
+      // Create InputImage
+      final inputImage = InputImage.fromFilePath(filePath);
+
+      // Process image
+      final poses = await _poseDetector.processImage(inputImage);
+      if (poses.isEmpty) {
+        print("❌ No pose detected in image.");
+        return;
+      }
+
+      // Delete temporary file
+      await file.delete();
+
+      if (poses.isNotEmpty) {
+        final pose = poses.first;
+        final imageSize = _cameraController.value.previewSize!;
+        final isFront = _cameraController.description.lensDirection ==
+            CameraLensDirection.front;
+
+        setState(() {
+          _customPaint = CustomPaint(
+            painter: PosePainter(pose, imageSize, isFrontCamera: isFront),
+          );
+        });
+      }
+    } catch (e) {
+      debugPrint('Pose processing error: $e');
+    } finally {
+      _isDetecting = false;
     }
-
-    final bytes = allBytes.done().buffer.asUint8List();
-    final Size imageSize =
-        Size(image.width.toDouble(), image.height.toDouble());
-
-    final camera = _cameras[0];
-    final imageRotation =
-        InputImageRotationValue.fromRawValue(camera.sensorOrientation) ??
-            InputImageRotation.rotation0deg;
-
-    // For version 0.5.0, we need to save the image to a temporary file first
-    final directory = await getTemporaryDirectory();
-    final filePath = '${directory.path}/temp_camera_image.jpg';
-    final file = File(filePath);
-    await file.writeAsBytes(bytes);
-
-    // Create InputImage from file path
-    final inputImage = InputImage.fromFilePath(filePath);
-
-    final poses = await _poseDetector.processImage(inputImage);
-
-    // Clean up the temporary file
-    await file.delete();
-
-    if (poses.isNotEmpty) {
-      final painter = PosePainter(poses.first, imageSize);
-      setState(() {
-        _customPaint = CustomPaint(painter: painter);
-      });
-    }
-
-    _isDetecting = false;
   }
 
   @override
@@ -170,54 +177,44 @@ class PosePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint dotPaint = Paint()
       ..color = Colors.green
-      ..style = PaintingStyle.fill
-      ..strokeWidth = 4.0;
+      ..style = PaintingStyle.fill;
 
     final Paint linePaint = Paint()
       ..color = Colors.blue
-      ..strokeWidth = 2.0
-      ..style = PaintingStyle.stroke;
+      ..strokeWidth = 2.0;
 
-    // Scale between actual camera image size and screen size
-    final double scaleX = size.width / imageSize.width;
-    final double scaleY = size.height / imageSize.height;
+    final double scaleX =
+        size.width / imageSize.height; // Note: width <-> height
+    final double scaleY = size.height / imageSize.width;
 
-    Offset transform(PoseLandmark landmark) {
-      double x = landmark.x * scaleX;
-      double y = landmark.y * scaleY;
+    Offset translate(PoseLandmark landmark) {
+      double x = landmark.y * scaleX;
+      double y = landmark.x * scaleY;
 
-      // Flip horizontally for front camera
-      if (isFrontCamera) {
-        x = size.width - x;
-      }
+      if (isFrontCamera) x = size.width - x;
 
       return Offset(x, y);
     }
 
-    // Draw keypoints
     for (final landmark in pose.landmarks.values) {
-      final offset = transform(landmark);
-      canvas.drawCircle(offset, 5, dotPaint);
+      canvas.drawCircle(translate(landmark), 5, dotPaint);
     }
 
-    // Helper to draw lines between joints
     void drawLine(PoseLandmarkType type1, PoseLandmarkType type2) {
-      final landmark1 = pose.landmarks[type1];
-      final landmark2 = pose.landmarks[type2];
-      if (landmark1 != null && landmark2 != null) {
-        canvas.drawLine(transform(landmark1), transform(landmark2), linePaint);
+      final l1 = pose.landmarks[type1];
+      final l2 = pose.landmarks[type2];
+      if (l1 != null && l2 != null) {
+        canvas.drawLine(translate(l1), translate(l2), linePaint);
       }
     }
 
-    // Draw common skeleton connections
+    // Skeleton connections
     drawLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.rightShoulder);
+    drawLine(PoseLandmarkType.leftHip, PoseLandmarkType.rightHip);
     drawLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftElbow);
     drawLine(PoseLandmarkType.leftElbow, PoseLandmarkType.leftWrist);
     drawLine(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightElbow);
     drawLine(PoseLandmarkType.rightElbow, PoseLandmarkType.rightWrist);
-    drawLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftHip);
-    drawLine(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightHip);
-    drawLine(PoseLandmarkType.leftHip, PoseLandmarkType.rightHip);
     drawLine(PoseLandmarkType.leftHip, PoseLandmarkType.leftKnee);
     drawLine(PoseLandmarkType.leftKnee, PoseLandmarkType.leftAnkle);
     drawLine(PoseLandmarkType.rightHip, PoseLandmarkType.rightKnee);
@@ -225,5 +222,5 @@ class PosePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(PosePainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
