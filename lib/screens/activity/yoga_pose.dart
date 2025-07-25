@@ -21,7 +21,7 @@ class _PoseViewerPageState extends State<PoseViewerPage> {
   String? _prediction;
   List<String> _labels = [];
   late Interpreter _interpreter;
-  bool _isModelLoaded = false; // ✅ new flag
+  bool _isModelLoaded = false;
 
   @override
   void initState() {
@@ -37,17 +37,14 @@ class _PoseViewerPageState extends State<PoseViewerPage> {
       setState(() {
         _isModelLoaded = true;
       });
-      print(
-          "✅ Model loaded with input: ${_interpreter.getInputTensor(0).shape}, "
-          "output: ${_interpreter.getOutputTensor(0).shape}");
+      print("✅ Model loaded");
     } catch (e) {
       print("❌ Failed to load model: $e");
     }
   }
 
-  Future<void> _pickAndDetectPose() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImageWithSource(ImageSource source) async {
+    final XFile? pickedFile = await _picker.pickImage(source: source);
     if (pickedFile == null) return;
 
     final inputImage = InputImage.fromFilePath(pickedFile.path);
@@ -67,57 +64,69 @@ class _PoseViewerPageState extends State<PoseViewerPage> {
     });
   }
 
-  Future<void> _classifyPose() async {
-    if (!_isModelLoaded) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Model not loaded yet")),
-      );
-      return;
-    }
+  Future<void> _pickAndDetectPose() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImageWithSource(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo),
+                title: const Text('Gallery'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImageWithSource(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-    if (_detectedPose == null) {
-      print("❌ No pose detected");
+  Future<void> _classifyPose() async {
+    if (!_isModelLoaded || _detectedPose == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("No pose detected. Try again.")),
+        const SnackBar(content: Text("Model not ready or pose not detected")),
       );
       return;
     }
 
     List<double> angles = extractPoseAngles(_detectedPose!);
-    print("🧠 Extracted Angles (${angles.length}): $angles");
-    if (angles.isEmpty ||
-        angles.length != _interpreter.getInputTensor(0).shape[1]) {
+    print("🧠 Angles (${angles.length}): $angles");
+
+    final expectedLen = _interpreter.getInputTensor(0).shape[1];
+    if (angles.length != expectedLen) {
       print(
-          "❌ Invalid angles: got ${angles.length}, expected ${_interpreter.getInputTensor(0).shape[1]}");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Could not extract valid pose angles")),
-      );
+          "❌ Angle count mismatch: got ${angles.length}, expected $expectedLen");
       return;
     }
 
+    final input = angles.reshape([1, expectedLen]);
+    final output =
+        List.filled(_labels.length, 0.0).reshape([1, _labels.length]);
+
     try {
-      final inputShape = _interpreter.getInputTensor(0).shape;
-      final outputShape = _interpreter.getOutputTensor(0).shape;
-
-      final input = angles.reshape([1, inputShape[1]]);
-      final output =
-          List.filled(outputShape[1], 0.0).reshape([1, outputShape[1]]);
-
       _interpreter.run(input, output);
-
-      final predictionIndex = output[0].indexOf(
-        (output[0] as List<double>)
-            .reduce((double a, double b) => a > b ? a : b),
+      final predictedIndex = output[0].indexOf(
+        (output[0] as List<double>).reduce((a, b) => a > b ? a : b),
       );
 
       setState(() {
-        _prediction = _labels[predictionIndex];
+        _prediction = _labels[predictedIndex];
       });
     } catch (e) {
       print("❌ Classification error: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Classification failed: ${e.toString()}")),
-      );
     }
   }
 
@@ -128,12 +137,14 @@ class _PoseViewerPageState extends State<PoseViewerPage> {
       body: Center(
         child: Column(
           children: [
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                    onPressed: _pickAndDetectPose,
-                    child: const Text("Pick Image")),
+                  onPressed: _pickAndDetectPose,
+                  child: const Text("Pick Image"),
+                ),
                 const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
@@ -162,8 +173,7 @@ class _PoseViewerPageState extends State<PoseViewerPage> {
             if (_uiImage != null)
               ElevatedButton(
                 onPressed: _isModelLoaded ? _classifyPose : null,
-                child:
-                    Text(_isModelLoaded ? "Detect Pose" : "Loading model..."),
+                child: Text(_isModelLoaded ? "Classify Pose" : "Loading..."),
               ),
             if (_prediction != null)
               Text("Detected Pose: $_prediction",
@@ -190,24 +200,16 @@ class PosePainter extends CustomPainter {
     canvas.drawImageRect(image, src, dst, paint);
 
     final landmarks = pose.landmarks;
-
-    final landmarkPaint = Paint()
-      ..color = Colors.red
-      ..style = PaintingStyle.fill;
-
-    final linePaint = Paint()
+    final redPaint = Paint()..color = Colors.red;
+    final greenLine = Paint()
       ..color = Colors.green
       ..strokeWidth = 2;
 
     double scaleX = size.width / image.width;
     double scaleY = size.height / image.height;
 
-    for (final lm in landmarks.values) {
-      canvas.drawCircle(
-        Offset(lm.x * scaleX, lm.y * scaleY),
-        4,
-        landmarkPaint,
-      );
+    for (var lm in landmarks.values) {
+      canvas.drawCircle(Offset(lm.x * scaleX, lm.y * scaleY), 4, redPaint);
     }
 
     void connect(PoseLandmarkType a, PoseLandmarkType b) {
@@ -217,7 +219,7 @@ class PosePainter extends CustomPainter {
         canvas.drawLine(
           Offset(p1.x * scaleX, p1.y * scaleY),
           Offset(p2.x * scaleX, p2.y * scaleY),
-          linePaint,
+          greenLine,
         );
       }
     }
@@ -230,10 +232,10 @@ class PosePainter extends CustomPainter {
     connect(PoseLandmarkType.leftKnee, PoseLandmarkType.leftAnkle);
     connect(PoseLandmarkType.rightHip, PoseLandmarkType.rightKnee);
     connect(PoseLandmarkType.rightKnee, PoseLandmarkType.rightAnkle);
-    connect(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftHip);
-    connect(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightHip);
     connect(PoseLandmarkType.leftShoulder, PoseLandmarkType.rightShoulder);
     connect(PoseLandmarkType.leftHip, PoseLandmarkType.rightHip);
+    connect(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftHip);
+    connect(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightHip);
   }
 
   @override
