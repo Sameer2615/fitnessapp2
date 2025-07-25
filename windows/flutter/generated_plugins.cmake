@@ -3,13 +3,16 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  app_links
   awesome_notifications
   cloud_firestore
   file_selector_windows
   firebase_auth
   firebase_core
+  flutter_secure_storage_windows
   flutter_timezone
   permission_handler_windows
+  sentry_flutter
   url_launcher_windows
 )
 
