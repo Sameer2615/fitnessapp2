@@ -93,7 +93,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: Text(S.of(context).settingAboutLabel),
                   onTap: () => _showAboutDialog(context),
                 ),
-                const SizedBox(height: 32.0),
+                // const SizedBox(height: 32.0),
                 AppBannerVersion(versionNumber: state.versionNumber)
               ],
             );

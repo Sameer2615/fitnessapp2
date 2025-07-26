@@ -37,7 +37,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColorLight,
+      color: Colors.white,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -47,12 +47,8 @@ class _SignupPageState extends State<SignupPage> {
               height: 120,
             ),
 
-            Image.asset(
-              'assets/img/logo1.png',
-              width: 1000,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
+            Image.asset('assets/img/logo1.png',
+                width: 1000, height: 100, fit: BoxFit.cover),
             const SizedBox(
               height: 10,
             ),
@@ -110,13 +106,13 @@ class _SignupPageState extends State<SignupPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
                   ),
                   child: Text('Sign me Up',
-                      style: Theme.of(context)
-                          .textTheme
-                          .displaySmall
-                          ?.copyWith(color: Colors.white)),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
                 ),
               ),
             ),
@@ -124,31 +120,6 @@ class _SignupPageState extends State<SignupPage> {
             const SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Already have an Account?',
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()));
-                    },
-                    child: Text('LogIn',
-                        style: Theme.of(context).textTheme.displaySmall),
-                  )
-                ],
-              ),
-            )
           ],
         ),
       ),

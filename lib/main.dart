@@ -90,10 +90,10 @@ class FitTrack extends StatelessWidget {
           useMaterial3: true,
           colorScheme: lightColorScheme,
           textTheme: appTextTheme),
-      darkTheme: ThemeData(
-          useMaterial3: true,
-          colorScheme: darkColorScheme,
-          textTheme: appTextTheme),
+      // darkTheme: ThemeData(
+      //     useMaterial3: true,
+      //     colorScheme: darkColorScheme,
+      //     textTheme: appTextTheme),
       themeMode: Provider.of<ThemeModeProvider>(context).themeMode,
       localizationsDelegates: const [
         S.delegate,
